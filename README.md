@@ -15,6 +15,11 @@ An Express.js backend using Prisma ORM and MySQL.
 
 ---
 
+## Generate Session Secret
+```
+openssl rand -base64 64
+```
+
 ## 🚀 Setup Guide
 
 1️⃣ Install dependencies

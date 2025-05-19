@@ -14,15 +14,144 @@ datasource db {
 }
 
 model User {
+  id         Int      @id @default(autoincrement())
+  firstname  String
+  lastname   String
+  middlename String?
+  username   String   @unique
+  password   String
+  email      String   @unique
+  role       String
+  status     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Academic_Year {
   id          Int      @id @default(autoincrement())
-  firstname   String
-  lastname    String
-  middlename  String?
-  username    String   @unique
-  password    String
-  email       String   @unique
-  role        String
+  term        String   @unique
+  description String
   status      String
+  start_date  DateTime
+  end_date    DateTime
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+}
+
+
+model Course {
+  id                Int      @id @default(autoincrement())
+  term              String
+  title             String   @db.VarChar(255)
+  description       String   @db.Text
+  faculty_id        Int
+  faculty_full_name String   @db.VarChar(175)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  // Relations
+  lessons           Lesson[]
+  assessments       Assessment[]
+}
+
+model Lesson {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
+  course_id   Int
+  order_no    Int
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  // Relations
+  course      Course   @relation(fields: [course_id], references: [id])
+  content     Content?
+  assessments Assessment[]
+}
+
+model Content {
+  id                Int    @id @default(autoincrement())
+  lesson_id         Int    @unique
+  ebooks_id         Int
+  attachment_link_1 String @db.VarChar(255)
+  attachment_link_2 String @db.VarChar(255)
+  attachment_link_3 String @db.VarChar(255)
+
+  // Relations
+  lesson            Lesson @relation(fields: [lesson_id], references: [id])
+}
+
+model Assessment {
+  id            Int      @id @default(autoincrement())
+  course_id     Int
+  lesson_id     Int
+  title         String   @db.VarChar(255)
+  description   String   @db.Text
+  total_points  Int
+  time_limit    Int      // Time in seconds or minutes (Prisma doesn't support TIME natively)
+  attempt_limit Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  course        Course   @relation(fields: [course_id], references: [id])
+  lesson        Lesson   @relation(fields: [lesson_id], references: [id])
+  questions     Question[]
+  attempts      UserAttempt[]
+}
+
+model Question {
+  id            Int      @id @default(autoincrement())
+  assessment_id Int
+  question      String   @db.Text
+  type          QuestionType
+  points        Int
+
+  // Relations
+  assessment    Assessment @relation(fields: [assessment_id], references: [id])
+  options       QuestionOption[]
+  userAnswers   UserAnswer[]
+}
+
+model QuestionOption {
+  id           Int     @id @default(autoincrement())
+  question_id  Int
+  description  String? @db.Text
+  is_correct   Boolean
+
+  // Relations
+  question     Question @relation(fields: [question_id], references: [id])
+  userAnswers  UserAnswer[]
+}
+
+model UserAttempt {
+  id             Int      @id @default(autoincrement())
+  student_id     Int
+  assessment_id  Int
+  score          Int
+  started_at     DateTime
+  submitted_at   DateTime?
+
+  // Relations
+  assessment     Assessment @relation(fields: [assessment_id], references: [id])
+  userAnswers    UserAnswer[]
+}
+
+model UserAnswer {
+  id                 Int     @id @default(autoincrement())
+  user_attempt_id    Int
+  question_id        Int
+  selected_option_id Int
+  is_correct         Boolean
+
+  // Relations
+  userAttempt        UserAttempt   @relation(fields: [user_attempt_id], references: [id])
+  question           Question      @relation(fields: [question_id], references: [id])
+  selectedOption     QuestionOption @relation(fields: [selected_option_id], references: [id])
+}
+
+enum QuestionType {
+  multiple_choice
+  true_or_false
+  identification
 }
