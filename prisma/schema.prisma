@@ -27,6 +27,22 @@ model User {
   updated_at DateTime @updatedAt
 }
 
+model EnrolledStudent {
+  id                 Int      @id @default(autoincrement())
+  term               String
+  student_session_id Int
+  student_id         Int
+  session_id         Int
+  firstname          String
+  lastname           String
+  middlename         String?
+  year_level         String
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  StudentAssignCourses StudentAssignCourses[]
+}
+
 model Academic_Year {
   id          Int      @id @default(autoincrement())
   term        String   @unique
@@ -37,7 +53,6 @@ model Academic_Year {
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }
-
 
 model Course {
   id                Int      @id @default(autoincrement())
@@ -50,8 +65,23 @@ model Course {
   updated_at        DateTime @updatedAt
 
   // Relations
-  lessons           Lesson[]
-  assessments       Assessment[]
+  lessons     Lesson[]
+  assessments Assessment[]
+
+  StudentAssignCourses StudentAssignCourses[]
+}
+
+model StudentAssignCourses {
+  id                  Int      @id @default(autoincrement())
+  term                String
+  enrolled_student_id Int
+  course_id           Int
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  // Relations
+  enrolledStudent EnrolledStudent @relation(fields: [enrolled_student_id], references: [id])
+  course          Course          @relation(fields: [course_id], references: [id])
 }
 
 model Lesson {
@@ -64,7 +94,7 @@ model Lesson {
   updated_at  DateTime @updatedAt
 
   // Relations
-  course      Course   @relation(fields: [course_id], references: [id])
+  course      Course       @relation(fields: [course_id], references: [id])
   content     Content?
   assessments Assessment[]
 }
@@ -78,7 +108,7 @@ model Content {
   attachment_link_3 String @db.VarChar(255)
 
   // Relations
-  lesson            Lesson @relation(fields: [lesson_id], references: [id])
+  lesson Lesson @relation(fields: [lesson_id], references: [id])
 }
 
 model Assessment {
@@ -88,53 +118,53 @@ model Assessment {
   title         String   @db.VarChar(255)
   description   String   @db.Text
   total_points  Int
-  time_limit    Int      // Time in seconds or minutes (Prisma doesn't support TIME natively)
+  time_limit    Int // Time in seconds or minutes (Prisma doesn't support TIME natively)
   attempt_limit Int
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
 
   // Relations
-  course        Course   @relation(fields: [course_id], references: [id])
-  lesson        Lesson   @relation(fields: [lesson_id], references: [id])
-  questions     Question[]
-  attempts      UserAttempt[]
+  course    Course        @relation(fields: [course_id], references: [id])
+  lesson    Lesson        @relation(fields: [lesson_id], references: [id])
+  questions Question[]
+  attempts  UserAttempt[]
 }
 
 model Question {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   assessment_id Int
-  question      String   @db.Text
+  question      String       @db.Text
   type          QuestionType
   points        Int
 
   // Relations
-  assessment    Assessment @relation(fields: [assessment_id], references: [id])
-  options       QuestionOption[]
-  userAnswers   UserAnswer[]
+  assessment  Assessment       @relation(fields: [assessment_id], references: [id])
+  options     QuestionOption[]
+  userAnswers UserAnswer[]
 }
 
 model QuestionOption {
-  id           Int     @id @default(autoincrement())
-  question_id  Int
-  description  String? @db.Text
-  is_correct   Boolean
+  id          Int     @id @default(autoincrement())
+  question_id Int
+  description String? @db.Text
+  is_correct  Boolean
 
   // Relations
-  question     Question @relation(fields: [question_id], references: [id])
-  userAnswers  UserAnswer[]
+  question    Question     @relation(fields: [question_id], references: [id])
+  userAnswers UserAnswer[]
 }
 
 model UserAttempt {
-  id             Int      @id @default(autoincrement())
-  student_id     Int
-  assessment_id  Int
-  score          Int
-  started_at     DateTime
-  submitted_at   DateTime?
+  id            Int       @id @default(autoincrement())
+  student_id    Int
+  assessment_id Int
+  score         Int
+  started_at    DateTime
+  submitted_at  DateTime?
 
   // Relations
-  assessment     Assessment @relation(fields: [assessment_id], references: [id])
-  userAnswers    UserAnswer[]
+  assessment  Assessment   @relation(fields: [assessment_id], references: [id])
+  userAnswers UserAnswer[]
 }
 
 model UserAnswer {
@@ -145,13 +175,31 @@ model UserAnswer {
   is_correct         Boolean
 
   // Relations
-  userAttempt        UserAttempt   @relation(fields: [user_attempt_id], references: [id])
-  question           Question      @relation(fields: [question_id], references: [id])
-  selectedOption     QuestionOption @relation(fields: [selected_option_id], references: [id])
+  userAttempt    UserAttempt    @relation(fields: [user_attempt_id], references: [id])
+  question       Question       @relation(fields: [question_id], references: [id])
+  selectedOption QuestionOption @relation(fields: [selected_option_id], references: [id])
 }
 
 enum QuestionType {
   multiple_choice
   true_or_false
   identification
+}
+
+
+model Ebooks {
+  id                 Int     @id @default(autoincrement())
+  title String
+  description String
+  cover_image String
+  content_html String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+}
+
+model VideoGallery {
+    id                 Int      @id @default(autoincrement())
+    video_url          String   @db.VarChar(255)
+    created_at         DateTime @default(now())
+    updated_at         DateTime @updatedAt
 }

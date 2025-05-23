@@ -4,8 +4,10 @@ const jwt = require("jsonwebtoken");
 const userRoutes = require("./routes/superadmin/userRoutes");
 const globalRoutes = require("./routes/global/globalRoutes");
 const authRoutes = require("./routes/authRoutes");
-const academicYearRoutes = require("./routes/administrative/academicYearRoutes");
+const academicYearRoutes = require("./routes/administrative/academicYearRoute");
 const coursesRoutes = require("./routes/administrative/coursesRoute");
+const enrolledStudentRoutes = require('./routes/administrative/enrolledStudentRoute');
+const assignCourseRoutes = require('./routes/administrative/assignCourseRoute');
 
 require("dotenv").config();
 
@@ -50,6 +52,12 @@ app.use("/api/auth", authRoutes);
 
 // Protected routes for Courses
 app.use("/api/courses", verifyToken, coursesRoutes);
+
+// Protected routes for Enrolled Student
+app.use("/api/enroll-student", verifyToken, enrolledStudentRoutes);
+
+// Protected routes for Assign Course
+app.use("/api/assign-course", verifyToken, assignCourseRoutes);
 
 // Protected routes for academic year
 app.use("/api/academic_year", verifyToken, academicYearRoutes);
