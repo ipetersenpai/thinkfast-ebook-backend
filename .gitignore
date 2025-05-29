@@ -129,9 +129,9 @@ dist
 .vscode-test
 
 # Uploads folder
-.uploads
+# .uploads
 
-/uploads
+# /uploads
 
 # yarn v2
 .yarn/cache
