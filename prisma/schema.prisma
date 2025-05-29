@@ -1,0 +1,235 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  firstname  String
+  lastname   String
+  middlename String?
+  username   String   @unique
+  password   String
+  email      String   @unique
+  role       String
+  status     String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model EnrolledStudent {
+  id                 Int      @id @default(autoincrement())
+  term               String
+  student_session_id Int
+  student_id         Int
+  session_id         Int
+  firstname          String
+  lastname           String
+  middlename         String?
+  year_level         String
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  StudentAssignCourses    StudentAssignCourses[]
+  studentPerformanceTasks StudentPerformanceTask[]
+}
+
+model Academic_Year {
+  id          Int      @id @default(autoincrement())
+  term        String   @unique
+  description String
+  status      String
+  start_date  DateTime
+  end_date    DateTime
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+
+model Course {
+  id                Int      @id @default(autoincrement())
+  term              String
+  title             String   @db.VarChar(255)
+  description       String   @db.Text
+  faculty_id        Int
+  faculty_full_name String   @db.VarChar(175)
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+
+  // Relations
+  lessons               Lesson[]
+  assessments           Assessment[]
+  StudentAssignCourses  StudentAssignCourses[]
+  performanceTaskScores PerformanceTaskScore[]
+}
+
+model StudentAssignCourses {
+  id                  Int      @id @default(autoincrement())
+  term                String
+  enrolled_student_id Int
+  course_id           Int
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+
+  // Relations
+  enrolledStudent EnrolledStudent @relation(fields: [enrolled_student_id], references: [id])
+  course          Course          @relation(fields: [course_id], references: [id])
+}
+
+model Lesson {
+  id          Int          @id @default(autoincrement())
+  title       String       @db.VarChar(255)
+  description String       @db.Text
+  course_id   Int
+  order_no    Int
+  is_active   Boolean      @default(false)
+  created_at  DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  // Relations
+  course      Course       @relation(fields: [course_id], references: [id])
+  content     Content?
+  assessments Assessment[]
+}
+
+model Content {
+  id                Int     @id @default(autoincrement())
+  lesson_id         Int     @unique
+  ebooks_id         Int?    @unique
+  attachment_link_1 String? @db.VarChar(255)
+  attachment_link_2 String? @db.VarChar(255)
+  attachment_link_3 String? @db.VarChar(255)
+  attachment_link_4 String? @db.VarChar(255)
+
+  // Relations
+  lesson Lesson @relation(fields: [lesson_id], references: [id])
+}
+
+model Assessment {
+  id              Int    @id @default(autoincrement())
+  course_id       Int
+  lesson_id       Int
+  assessment_type String @db.VarChar(80) // e.g., 'quiz', 'exam'
+  title           String @db.VarChar(255)
+  description     String @db.Text
+  total_points    Int
+
+  time_limit    Int // Time in seconds or minutes (Prisma doesn't support TIME natively)
+  attempt_limit Int
+  date_open     DateTime
+  date_close    DateTime
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  // Relations
+  course    Course        @relation(fields: [course_id], references: [id])
+  lesson    Lesson        @relation(fields: [lesson_id], references: [id])
+  questions Question[]
+  attempts  UserAttempt[]
+}
+
+model Question {
+  id            Int          @id @default(autoincrement())
+  assessment_id Int
+  question      String       @db.Text
+  type          QuestionType
+  points        Int
+
+  // Relations
+  assessment  Assessment       @relation(fields: [assessment_id], references: [id])
+  options     QuestionOption[]
+  userAnswers UserAnswer[]
+}
+
+model QuestionOption {
+  id          Int     @id @default(autoincrement())
+  question_id Int
+  description String? @db.Text
+  is_correct  Boolean
+
+  // Relations
+  question    Question     @relation(fields: [question_id], references: [id])
+  userAnswers UserAnswer[]
+}
+
+model UserAttempt {
+  id            Int       @id @default(autoincrement())
+  student_id    Int
+  assessment_id Int
+  score         Int
+  started_at    DateTime
+  submitted_at  DateTime?
+
+  // Relations
+  assessment  Assessment   @relation(fields: [assessment_id], references: [id])
+  userAnswers UserAnswer[]
+}
+
+model UserAnswer {
+  id                 Int     @id @default(autoincrement())
+  user_attempt_id    Int
+  question_id        Int
+  selected_option_id Int
+  is_correct         Boolean
+
+  // Relations
+  userAttempt    UserAttempt    @relation(fields: [user_attempt_id], references: [id])
+  question       Question       @relation(fields: [question_id], references: [id])
+  selectedOption QuestionOption @relation(fields: [selected_option_id], references: [id])
+}
+
+enum QuestionType {
+  multiple_choice
+  true_false
+  enumeration
+}
+
+model Ebooks {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  cover_image  String?
+  content_html String
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+}
+
+model VideoGallery {
+  id         Int      @id @default(autoincrement())
+  video_url  String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model PerformanceTaskScore {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  total_points Int
+  course_id    Int
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  // Relations
+  course                  Course                   @relation(fields: [course_id], references: [id])
+  studentPerformanceTasks StudentPerformanceTask[]
+}
+
+model StudentPerformanceTask {
+  id                        Int      @id @default(autoincrement())
+  student_id                Int
+  performance_task_score_id Int
+  score                     Int
+  created_at                DateTime @default(now())
+  updated_at                DateTime @updatedAt
+
+  enrolledStudent      EnrolledStudent      @relation(fields: [student_id], references: [id])
+  performanceTaskScore PerformanceTaskScore @relation(fields: [performance_task_score_id], references: [id])
+}
