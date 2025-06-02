@@ -49,6 +49,34 @@ router.get("/course/:courseId", async (req, res) => {
 });
 
 
+
+// Delete a performance task by ID
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Optionally, delete related studentPerformanceTask records first if cascade is not enabled
+    await prisma.studentPerformanceTask.deleteMany({
+      where: {
+        performance_task_score_id: parseInt(id),
+      },
+    });
+
+    const deletedTask = await prisma.performanceTaskScore.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+
+    res.json({ message: "Performance task deleted successfully.", deletedTask });
+  } catch (error) {
+    console.error("Error deleting performance task:", error);
+    res.status(500).json({ message: "Failed to delete performance task." });
+  }
+});
+
+
+
 // Get all students enrolled in a course with their performance task score for a specific task
 router.get("/enrolled-students/:courseId/:pt_id", async (req, res) => {
   const { courseId, pt_id } = req.params;

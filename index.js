@@ -99,7 +99,7 @@ app.use("/api/get-user", verifyToken, globalRoutes);
 // ========================
 
 
-app.use("/api/student", verifyToken, enrolledCoursesRoutes);
+app.use("/api/student", enrolledCoursesRoutes);
 
 
 

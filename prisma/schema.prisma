@@ -98,12 +98,14 @@ model Lesson {
   course      Course       @relation(fields: [course_id], references: [id])
   content     Content?
   assessments Assessment[]
+
+    @@unique([course_id, order_no])
 }
 
 model Content {
   id                Int     @id @default(autoincrement())
   lesson_id         Int     @unique
-  ebooks_id         Int?    @unique
+  ebooks_id         Int?
   attachment_link_1 String? @db.VarChar(255)
   attachment_link_2 String? @db.VarChar(255)
   attachment_link_3 String? @db.VarChar(255)
