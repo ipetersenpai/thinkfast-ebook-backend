@@ -152,47 +152,88 @@ router.get("/assessment/:assessment_id/questions", async (req, res) => {
 // POST /api/student/submit-attempt
 router.post("/submit-attempt", async (req, res) => {
   const { student_id, assessment_id, answers } = req.body;
-  // answers = [{ question_id: 1, selected_option_id: 3 }, ...]
 
   try {
     const started_at = new Date();
-
     let score = 0;
 
+    // Create the user attempt
     const createdAttempt = await prisma.userAttempt.create({
       data: {
         student_id,
         assessment_id,
         started_at,
+        score: 0,
       },
     });
 
     const attemptId = createdAttempt.id;
 
+    // Process each answer
     for (const answer of answers) {
-      const option = await prisma.questionOption.findUnique({
-        where: { id: answer.selected_option_id },
+      let isCorrect = false;
+      let selectedOptionId = null;
+
+      const question = await prisma.question.findUnique({
+        where: { id: answer.question_id },
       });
 
-      const isCorrect = option?.is_correct || false;
+      if (!question) continue;
 
-      if (isCorrect) {
-        const question = await prisma.question.findUnique({
-          where: { id: answer.question_id },
+      // Case 1: Multiple choice or true/false
+      if (answer.selected_option_id) {
+        const option = await prisma.questionOption.findUnique({
+          where: { id: answer.selected_option_id },
         });
-        score += question?.points || 0;
+
+        isCorrect = option?.is_correct || false;
+        selectedOptionId = answer.selected_option_id;
       }
 
+      // Case 2: Enumeration input
+      else if (answer.input_answer) {
+        const input = answer.input_answer.trim().toLowerCase();
+
+        // Fetch all correct options for the question
+        const correctOptions = await prisma.questionOption.findMany({
+          where: {
+            question_id: answer.question_id,
+            is_correct: true,
+            description: {
+              not: null,
+            },
+          },
+        });
+
+        // Check for exact match (case-insensitive)
+        const match = correctOptions.find(opt =>
+          opt.description?.trim().toLowerCase() === input
+        );
+
+        if (match) {
+          isCorrect = true;
+          selectedOptionId = match.id;
+        }
+      }
+
+      // Award points if correct
+      if (isCorrect) {
+        score += question.points || 0;
+      }
+
+      // Save the user's answer
       await prisma.userAnswer.create({
         data: {
           user_attempt_id: attemptId,
           question_id: answer.question_id,
-          selected_option_id: answer.selected_option_id,
+          selected_option_id: selectedOptionId,
           is_correct: isCorrect,
+          input_answer: answer.input_answer || null,
         },
       });
     }
 
+    // Update the user attempt with final score and submission time
     await prisma.userAttempt.update({
       where: { id: attemptId },
       data: {
@@ -208,9 +249,14 @@ router.post("/submit-attempt", async (req, res) => {
     });
   } catch (error) {
     console.error("Error submitting attempt:", error);
-    return res.status(500).json({ status: "error", message: "Server error" });
+    return res.status(500).json({
+      status: "error",
+      message: "Server error",
+    });
   }
 });
+
+
 
 
 

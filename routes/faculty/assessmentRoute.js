@@ -72,7 +72,6 @@ router.post("/", async (req, res) => {
           });
 
           if (
-            question.type !== "enumeration" &&
             question.options &&
             question.options.length > 0
           ) {

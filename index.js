@@ -15,6 +15,7 @@ const assessmentRoutes = require("./routes/faculty/assessmentRoute");
 const videoGalleryRoutes = require("./routes/superadmin/videoGalleryRoute");
 const enrolledCoursesRoutes = require("./routes/student/enrolledCoursesRoute");
 const performanceTaskRoutes = require("./routes/faculty/performanceTaskRoute");
+const studentAttemptRoute = require("./routes/faculty/studentAttemptRoute");
 
 require("dotenv").config();
 
@@ -91,6 +92,9 @@ app.use("/api/users", verifyToken, userRoutes);
 
 // Protected routes for global user data
 app.use("/api/get-user", verifyToken, globalRoutes);
+
+// Protected routes for student attempts
+app.use("/api/student-attempts", verifyToken, studentAttemptRoute);
 
 
 

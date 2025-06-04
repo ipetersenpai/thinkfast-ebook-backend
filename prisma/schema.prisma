@@ -99,7 +99,7 @@ model Lesson {
   content     Content?
   assessments Assessment[]
 
-    @@unique([course_id, order_no])
+  @@unique([course_id, order_no])
 }
 
 model Content {
@@ -179,14 +179,16 @@ model UserAnswer {
   id                 Int     @id @default(autoincrement())
   user_attempt_id    Int
   question_id        Int
-  selected_option_id Int
+  selected_option_id Int?
   is_correct         Boolean
+  input_answer       String?
 
   // Relations
   userAttempt    UserAttempt    @relation(fields: [user_attempt_id], references: [id])
   question       Question       @relation(fields: [question_id], references: [id])
-  selectedOption QuestionOption @relation(fields: [selected_option_id], references: [id])
+  selectedOption QuestionOption? @relation(fields: [selected_option_id], references: [id])
 }
+
 
 enum QuestionType {
   multiple_choice
