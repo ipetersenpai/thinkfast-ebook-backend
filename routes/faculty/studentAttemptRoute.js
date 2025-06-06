@@ -124,6 +124,81 @@ router.get("/course/:courseId/students", async (req, res) => {
   }
 });
 
+// GET all students assigned to a course and their attempt count for a specific assessment
+router.get("/course/:courseId/students/:assessmentId", async (req, res) => {
+  const courseId = parseInt(req.params.courseId);
+  const assessmentId = parseInt(req.params.assessmentId);
+
+  if (isNaN(courseId) || isNaN(assessmentId)) {
+    return res.status(400).json({ error: "Invalid course ID or assessment ID." });
+  }
+
+  try {
+    // Get the assessment attempt limit
+    const assessment = await prisma.assessment.findUnique({
+      where: { id: assessmentId },
+      select: { attempt_limit: true },
+    });
+
+    if (!assessment) {
+      return res.status(404).json({ error: "Assessment not found." });
+    }
+
+    // Get all students assigned to the course
+    const assignedStudents = await prisma.studentAssignCourses.findMany({
+      where: {
+        course_id: courseId,
+      },
+      include: {
+        enrolledStudent: {
+          select: {
+            id: true,
+            student_id: true,
+            firstname: true,
+            lastname: true,
+            middlename: true,
+            year_level: true,
+            term: true,
+          },
+        },
+      },
+    });
+
+    // For each student, count how many attempts they made for the given assessment
+    const studentsWithAttempts = await Promise.all(
+      assignedStudents.map(async (a) => {
+        const student = a.enrolledStudent;
+
+        const full_name = [student.firstname, student.middlename, student.lastname]
+          .filter(Boolean)
+          .join(" ");
+
+        const attemptCount = await prisma.userAttempt.count({
+          where: {
+            student_id: student.student_id,
+            assessment_id: assessmentId,
+          },
+        });
+
+        return {
+          id: student.id,
+          student_id: student.student_id,
+          full_name,
+          year_level: student.year_level,
+          term: student.term,
+          attempts: `${attemptCount} out of ${assessment.attempt_limit}`,
+        };
+      })
+    );
+
+    res.json(studentsWithAttempts);
+  } catch (error) {
+    console.error("Failed to fetch students with attempts:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+
 
 // GET /assessments/:courseId
 router.get("/assessments/course/:courseId", async (req, res) => {

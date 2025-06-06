@@ -58,6 +58,13 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
             id: true,
             title: true,
             assessment_type: true,
+            time_limit: true,
+            attempt_limit: true,
+            date_open: true,
+            date_close: true,
+            _count: {
+              select: { questions: true },
+            },
           },
         },
       },
@@ -66,13 +73,18 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
       },
     });
 
-    // Map assessments to include `assessment_id` instead of `id`
+    // Map assessments to rename fields and include total questions
     const lessonsWithFormattedAssessments = lessons.map(lesson => ({
       ...lesson,
       assessments: lesson.assessments.map(a => ({
         assessment_id: a.id,
         title: a.title,
         assessment_type: a.assessment_type,
+        time_limit: a.time_limit,
+        attempt_limit: a.attempt_limit,
+        date_open: a.date_open,
+        date_close: a.date_close,
+        total_questions: a._count.questions,
       })),
     }));
 
@@ -82,6 +94,7 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
     return res.status(500).json({ status: "error", message: "Server error" });
   }
 });
+
 
 
 
