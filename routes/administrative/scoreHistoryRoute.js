@@ -48,14 +48,14 @@ router.get("/:studentId/:term", async (req, res) => {
             assessments: {
               include: {
                 attempts: {
-                  where: { student_id: studentId }, // still based on student_id
+                  where: { student_id: studentId },
                 },
               },
             },
             performanceTaskScores: {
               include: {
                 studentPerformanceTasks: {
-                  where: { student_id: enrolledStudent.id }, // ✅ use EnrolledStudent.id
+                  where: { student_id: enrolledStudent.id }, // uses EnrolledStudent.id
                 },
               },
             },
@@ -87,7 +87,16 @@ router.get("/:studentId/:term", async (req, res) => {
       })
     );
 
-    res.json(coursesWithScores);
+    // 4. Include student fullname and year_level
+    const fullname = `${enrolledStudent.firstname} ${
+      enrolledStudent.middlename ? enrolledStudent.middlename + " " : ""
+    }${enrolledStudent.lastname}`;
+
+    res.json({
+      fullname,
+      year_level: enrolledStudent.year_level,
+      courses: coursesWithScores,
+    });
   } catch (error) {
     console.error("Error fetching score history:", error);
     res.status(500).json({ error: "Internal Server Error" });

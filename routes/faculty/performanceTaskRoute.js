@@ -137,10 +137,36 @@ router.post("/score", async (req, res) => {
   const { student_id, performance_task_score_id, score } = req.body;
 
   if (!student_id || !performance_task_score_id || typeof score !== "number") {
-    return res.status(400).json({ message: "All fields are required and score must be a number." });
+    return res
+      .status(400)
+      .json({ message: "All fields are required and score must be a number." });
   }
 
   try {
+    // Step 1: Validate total_points
+    const performanceTaskScore = await prisma.performanceTaskScore.findUnique({
+      where: { id: performance_task_score_id },
+    });
+
+    if (!performanceTaskScore) {
+      return res.status(404).json({ message: "Performance task not found." });
+    }
+
+    if (score > performanceTaskScore.total_points) {
+      return res.status(400).json({
+        message: `Score cannot exceed total points (${performanceTaskScore.total_points}).`,
+      });
+    }
+
+    // Step 2: Delete existing score if it exists
+    await prisma.studentPerformanceTask.deleteMany({
+      where: {
+        student_id,
+        performance_task_score_id,
+      },
+    });
+
+    // Step 3: Create new score
     const newScore = await prisma.studentPerformanceTask.create({
       data: {
         student_id,
@@ -155,6 +181,7 @@ router.post("/score", async (req, res) => {
     res.status(500).json({ message: "Failed to record performance task score." });
   }
 });
+
 
 
 

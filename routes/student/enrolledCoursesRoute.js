@@ -45,6 +45,7 @@ router.get("/enrolled-courses/:student_session_id/:student_id", async (req, res)
 // GET /api/student/lessons-with-content/:course_id
 router.get("/lessons-with-content/:course_id", async (req, res) => {
   const { course_id } = req.params;
+  const { student_id } = req.query; // Get student_id from query params
 
   try {
     const lessons = await prisma.lesson.findMany({
@@ -62,8 +63,21 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
             attempt_limit: true,
             date_open: true,
             date_close: true,
+            total_points: true, // Added total_points to calculate score ratio
             _count: {
               select: { questions: true },
+            },
+            attempts: {
+              where: {
+                student_id: student_id ? Number(student_id) : undefined,
+              },
+              select: {
+                score: true,
+                submitted_at: true,
+              },
+              orderBy: {
+                score: 'desc', // Order by score to easily get highest score
+              },
             },
           },
         },
@@ -73,22 +87,39 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
       },
     });
 
-    // Map assessments to rename fields and include total questions
+    // Map assessments to include student performance data
     const lessonsWithFormattedAssessments = lessons.map(lesson => ({
       ...lesson,
-      assessments: lesson.assessments.map(a => ({
-        assessment_id: a.id,
-        title: a.title,
-        assessment_type: a.assessment_type,
-        time_limit: a.time_limit,
-        attempt_limit: a.attempt_limit,
-        date_open: a.date_open,
-        date_close: a.date_close,
-        total_questions: a._count.questions,
-      })),
+      assessments: lesson.assessments.map(a => {
+        const attempts = a.attempts;
+        const highestScore = attempts.length > 0 ? attempts[0].score : null;
+        const attemptCount = attempts.length;
+
+        return {
+          assessment_id: a.id,
+          title: a.title,
+          assessment_type: a.assessment_type,
+          time_limit: a.time_limit,
+          attempt_limit: a.attempt_limit,
+          date_open: a.date_open,
+          date_close: a.date_close,
+          total_questions: a._count.questions,
+          total_points: a.total_points,
+          student_performance: student_id ? {
+            highest_score: highestScore,
+            score_display: highestScore !== null ? `${highestScore}/${a.total_points}` : null,
+            attempt_count: attemptCount,
+            attempt_display: `${attemptCount}/${a.attempt_limit}`,
+          } : null,
+        };
+      }),
     }));
 
-    return res.status(200).json({ status: "success", lessons: lessonsWithFormattedAssessments });
+    return res.status(200).json({
+      status: "success",
+      lessons: lessonsWithFormattedAssessments,
+      student_id: student_id ? Number(student_id) : null,
+    });
   } catch (error) {
     console.error("Error fetching lessons and content:", error);
     return res.status(500).json({ status: "error", message: "Server error" });
@@ -266,6 +297,122 @@ router.post("/submit-attempt", async (req, res) => {
       status: "error",
       message: "Server error",
     });
+  }
+});
+
+
+// GET /api/academic-year
+router.get("/academic-year", async (req, res) => {
+  try {
+    const years = await prisma.academic_Year.findMany({
+      orderBy: { created_at: 'desc' },
+    });
+    res.json(years);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
+// GET /api/score-history/:studentId/:term
+router.get("/score-history/:studentId/:term", async (req, res) => {
+  const studentId = parseInt(req.params.studentId);
+  const term = req.params.term;
+
+  try {
+    // 1. Verify the term exists
+    const termData = await prisma.academic_Year.findFirst({
+      where: { term },
+    });
+
+    if (!termData) {
+      return res.status(404).json({ error: "Term not found" });
+    }
+
+    // 2. Find enrolled student record for this student_id in the term
+    const enrolledStudent = await prisma.enrolledStudent.findFirst({
+      where: {
+        student_id: studentId,
+        term: term,
+      },
+      include: {
+        StudentAssignCourses: true,
+      },
+    });
+
+    if (!enrolledStudent) {
+      return res
+        .status(404)
+        .json({ error: "Student is not enrolled in the specified term" });
+    }
+
+    const assignedCourseIds = enrolledStudent.StudentAssignCourses.map(
+      (sc) => sc.course_id
+    );
+
+    // 3. For each course, fetch assessment and performance task scores
+    const coursesWithScores = await Promise.all(
+      assignedCourseIds.map(async (courseId) => {
+        const course = await prisma.course.findUnique({
+          where: { id: courseId },
+          include: {
+            assessments: {
+              include: {
+                attempts: {
+                  where: { student_id: studentId },
+                },
+              },
+            },
+            performanceTaskScores: {
+              include: {
+                studentPerformanceTasks: {
+                  where: { student_id: enrolledStudent.id }, // uses EnrolledStudent.id
+                },
+              },
+            },
+          },
+        });
+
+        const assessmentScores = course.assessments.map((a) => {
+          const attempt = a.attempts[0]; // first attempt
+          return {
+            title: a.title,
+            score: attempt?.score ?? 0,
+            total_points: a.total_points,
+          };
+        });
+
+        const performanceScores = course.performanceTaskScores.map((pt) => {
+          const scoreRecord = pt.studentPerformanceTasks?.[0];
+          return {
+            title: pt.title || "Performance Task",
+            score: scoreRecord?.score ?? 0,
+            total_points: pt.total_points,
+          };
+        });
+
+        return {
+          course: course.title,
+          assessments: [...assessmentScores, ...performanceScores],
+        };
+      })
+    );
+
+    // 4. Include student fullname and year_level
+    const fullname = `${enrolledStudent.firstname} ${
+      enrolledStudent.middlename ? enrolledStudent.middlename + " " : ""
+    }${enrolledStudent.lastname}`;
+
+    res.json({
+      fullname,
+      year_level: enrolledStudent.year_level,
+      courses: coursesWithScores,
+    });
+  } catch (error) {
+    console.error("Error fetching score history:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 
