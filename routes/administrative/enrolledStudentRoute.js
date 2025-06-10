@@ -130,6 +130,59 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+
+// 📌 Get students by faculty_id and term
+router.get("/by-faculty/:facultyId/term/:term", async (req, res) => {
+  const { facultyId, term } = req.params;
+
+  try {
+    // Step 1: Find all course IDs assigned to the faculty for the given term
+    const courses = await prisma.course.findMany({
+      where: {
+        faculty_id: parseInt(facultyId),
+        term: term,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    const courseIds = courses.map((course) => course.id);
+
+    if (courseIds.length === 0) {
+      return res.status(200).json([]); // No courses = no students
+    }
+
+    // Step 2: Find all student assignments for these courses
+    const studentAssignments = await prisma.studentAssignCourses.findMany({
+      where: {
+        term: term,
+        course_id: { in: courseIds },
+      },
+      include: {
+        enrolledStudent: true,
+      },
+    });
+
+    // Step 3: Deduplicate students by enrolled_student_id
+    const uniqueStudentsMap = new Map();
+
+    studentAssignments.forEach(({ enrolledStudent }) => {
+      if (!uniqueStudentsMap.has(enrolledStudent.id)) {
+        uniqueStudentsMap.set(enrolledStudent.id, enrolledStudent);
+      }
+    });
+
+    const uniqueStudents = Array.from(uniqueStudentsMap.values());
+
+    res.json(uniqueStudents);
+  } catch (error) {
+    console.error("Error fetching students by faculty and term:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 // 📌 Delete a student by ID
 router.delete("/:id", async (req, res) => {
     const { id } = req.params;
