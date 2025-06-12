@@ -36,6 +36,7 @@ model EnrolledStudent {
   firstname          String
   lastname           String
   middlename         String?
+  gender            String?
   year_level         String
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt

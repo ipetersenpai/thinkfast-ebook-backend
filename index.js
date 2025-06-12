@@ -17,6 +17,7 @@ const enrolledCoursesRoutes = require("./routes/student/enrolledCoursesRoute");
 const performanceTaskRoutes = require("./routes/faculty/performanceTaskRoute");
 const studentAttemptRoute = require("./routes/faculty/studentAttemptRoute");
 const scoreHistoryRoute = require("./routes/administrative/scoreHistoryRoute");
+const statisticRoutes = require("./routes/global/statisticRoutes");
 
 
 require("dotenv").config();
@@ -101,7 +102,8 @@ app.use("/api/score-history", verifyToken, scoreHistoryRoute);
 // Protected routes for student attempts
 app.use("/api/student-attempts", verifyToken, studentAttemptRoute);
 
-
+// Protected routes for statistics
+app.use("/api/statistics", verifyToken, statisticRoutes);
 
 // ========================
 // Protected routes for tablets

@@ -181,6 +181,36 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Deactivate user
+router.patch("/deactivate/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: { status: "inactive" },
+    });
+
+    res.json({
+      message: "User deactivated successfully",
+      user: { ...updatedUser, password: undefined },
+    });
+  } catch (error) {
+    console.error(error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to deactivate user";
+    res.status(500).json({ message: errorMessage });
+  }
+});
+
 
 
 
