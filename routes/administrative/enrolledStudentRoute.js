@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
             firstname: student.firstname,
             lastname: student.lastname,
             middlename: student.middlename || null,
+            gender: student.gender || null,
             year_level: student.year_level,
           },
         });
@@ -127,7 +128,8 @@ router.put("/:id", async (req, res) => {
     firstname,
     lastname,
     middlename,
-    year_level
+    year_level,
+    gender
   } = req.body;
 
   try {
@@ -141,6 +143,7 @@ router.put("/:id", async (req, res) => {
         firstname,
         lastname,
         middlename: middlename || null,
+        gender,
         year_level
       }
     });
