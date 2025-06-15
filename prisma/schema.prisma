@@ -36,7 +36,7 @@ model EnrolledStudent {
   firstname          String
   lastname           String
   middlename         String?
-  gender            String?
+  gender             String?
   year_level         String
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
@@ -62,11 +62,11 @@ model Course {
   title             String   @db.VarChar(255)
   description       String   @db.Text
   faculty_id        Int
+  year_level        String   @db.VarChar(30)
   faculty_full_name String   @db.VarChar(175)
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt
 
-  // Relations
   lessons               Lesson[]
   assessments           Assessment[]
   StudentAssignCourses  StudentAssignCourses[]
@@ -83,20 +83,20 @@ model StudentAssignCourses {
 
   // Relations
   enrolledStudent EnrolledStudent @relation(fields: [enrolled_student_id], references: [id])
-  course          Course          @relation(fields: [course_id], references: [id])
+  course          Course          @relation(fields: [course_id], references: [id], onDelete: Cascade)
 }
 
 model Lesson {
-  id          Int          @id @default(autoincrement())
-  title       String       @db.VarChar(255)
-  description String       @db.Text
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.Text
   course_id   Int
   order_no    Int
-  is_active   Boolean      @default(false)
-  created_at  DateTime     @default(now())
-  updated_at  DateTime     @updatedAt
-  // Relations
-  course      Course       @relation(fields: [course_id], references: [id])
+  is_active   Boolean  @default(false)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  course      Course       @relation(fields: [course_id], references: [id], onDelete: Cascade)
   content     Content?
   assessments Assessment[]
 
@@ -112,28 +112,25 @@ model Content {
   attachment_link_3 String? @db.VarChar(255)
   attachment_link_4 String? @db.VarChar(255)
 
-  // Relations
-  lesson Lesson @relation(fields: [lesson_id], references: [id])
+  lesson Lesson @relation(fields: [lesson_id], references: [id], onDelete: Cascade)
 }
 
 model Assessment {
-  id              Int    @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   course_id       Int
   lesson_id       Int
-  assessment_type String @db.VarChar(80) // e.g., 'quiz', 'exam'
-  title           String @db.VarChar(255)
-  description     String @db.Text
+  assessment_type String   @db.VarChar(80)
+  title           String   @db.VarChar(255)
+  description     String   @db.Text
   total_points    Int
+  time_limit      Int
+  attempt_limit   Int
+  date_open       DateTime
+  date_close      DateTime
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 
-  time_limit    Int // Time in seconds or minutes (Prisma doesn't support TIME natively)
-  attempt_limit Int
-  date_open     DateTime
-  date_close    DateTime
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
-
-  // Relations
-  course    Course        @relation(fields: [course_id], references: [id])
+  course    Course        @relation(fields: [course_id], references: [id], onDelete: Cascade)
   lesson    Lesson        @relation(fields: [lesson_id], references: [id])
   questions Question[]
   attempts  UserAttempt[]
@@ -146,8 +143,7 @@ model Question {
   type          QuestionType
   points        Int
 
-  // Relations
-  assessment  Assessment       @relation(fields: [assessment_id], references: [id])
+  assessment  Assessment       @relation(fields: [assessment_id], references: [id], onDelete: Cascade)
   options     QuestionOption[]
   userAnswers UserAnswer[]
 }
@@ -158,8 +154,7 @@ model QuestionOption {
   description String? @db.Text
   is_correct  Boolean
 
-  // Relations
-  question    Question     @relation(fields: [question_id], references: [id])
+  question    Question     @relation(fields: [question_id], references: [id], onDelete: Cascade)
   userAnswers UserAnswer[]
 }
 
@@ -171,22 +166,21 @@ model UserAttempt {
   started_at    DateTime
   submitted_at  DateTime?
 
-  // Relations
-  assessment  Assessment   @relation(fields: [assessment_id], references: [id])
+  assessment  Assessment   @relation(fields: [assessment_id], references: [id], onDelete: Cascade)
   userAnswers UserAnswer[]
 }
 
+// Optional: To support future logic extensions
 model UserAnswer {
   id                 Int     @id @default(autoincrement())
   user_attempt_id    Int
   question_id        Int
-  selected_option_id Int?
+  selected_option_id Int?   // Only used for multiple_choice and true_false
   is_correct         Boolean
-  input_answer       String?
+  input_answer       String?   @db.Text // used for enumeration and essay
 
-  // Relations
-  userAttempt    UserAttempt    @relation(fields: [user_attempt_id], references: [id])
-  question       Question       @relation(fields: [question_id], references: [id])
+  userAttempt    UserAttempt     @relation(fields: [user_attempt_id], references: [id])
+  question       Question        @relation(fields: [question_id], references: [id], onDelete: Cascade)
   selectedOption QuestionOption? @relation(fields: [selected_option_id], references: [id])
 }
 
@@ -194,7 +188,8 @@ model UserAnswer {
 enum QuestionType {
   multiple_choice
   true_false
-  enumeration
+  identification
+  essay
 }
 
 model Ebooks {
@@ -222,8 +217,7 @@ model PerformanceTaskScore {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  // Relations
-  course                  Course                   @relation(fields: [course_id], references: [id])
+  course                  Course                   @relation(fields: [course_id], references: [id], onDelete: Cascade)
   studentPerformanceTasks StudentPerformanceTask[]
 }
 
@@ -235,6 +229,6 @@ model StudentPerformanceTask {
   created_at                DateTime @default(now())
   updated_at                DateTime @updatedAt
 
-  enrolledStudent      EnrolledStudent      @relation(fields: [student_id], references: [id])
-  performanceTaskScore PerformanceTaskScore @relation(fields: [performance_task_score_id], references: [id])
+  enrolledStudent EnrolledStudent @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  performanceTaskScore PerformanceTaskScore @relation(fields: [performance_task_score_id], references: [id], onDelete: Cascade)
 }

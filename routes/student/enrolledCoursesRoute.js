@@ -234,7 +234,7 @@ router.post("/submit-attempt", async (req, res) => {
         selectedOptionId = answer.selected_option_id;
       }
 
-      // Case 2: Enumeration input
+      // Case 2: identifcation input
       else if (answer.input_answer) {
         const input = answer.input_answer.trim().toLowerCase();
 

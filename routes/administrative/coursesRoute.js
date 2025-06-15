@@ -5,7 +5,14 @@ const router = express.Router();
 
 // 📌 Create a new Course
 router.post("/", async (req, res) => {
-  const { term, title, description, faculty_id, faculty_full_name } = req.body;
+  const {
+    term,
+    title,
+    description,
+    faculty_id,
+    faculty_full_name,
+    year_level,
+  } = req.body;
 
   try {
     // Create the course
@@ -16,6 +23,7 @@ router.post("/", async (req, res) => {
         description,
         faculty_id,
         faculty_full_name,
+        year_level,
       },
     });
 
@@ -84,8 +92,9 @@ router.get("/teachers", async (req, res) => {
         typeof teacher.middlename === "string" && teacher.middlename.length > 0
           ? `${teacher.middlename.charAt(0).toUpperCase()}.`
           : "";
+
       const fullName =
-        `${teacher.lastname}, ${teacher.firstname} ${middleInitial}`.trim();
+        `${teacher.firstname} ${middleInitial} ${teacher.lastname}`.trim();
 
       return {
         user_id: teacher.id,
@@ -125,7 +134,14 @@ router.get("/:id", async (req, res) => {
 // 📌 Update an existing Course
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { term, title, description, faculty_id, faculty_full_name } = req.body;
+  const {
+    term,
+    title,
+    description,
+    faculty_id,
+    faculty_full_name,
+    year_level,
+  } = req.body;
 
   try {
     const existingCourse = await prisma.course.findUnique({
@@ -144,12 +160,37 @@ router.put("/:id", async (req, res) => {
         description,
         faculty_id,
         faculty_full_name,
+        year_level,
       },
     });
 
     res.status(200).json(updatedCourse);
   } catch (error) {
     console.error("Error updating course:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// 📌 Delete a Course by ID
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const existingCourse = await prisma.course.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!existingCourse) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    await prisma.course.delete({
+      where: { id: Number(id) },
+    });
+
+    res.status(200).json({ message: "Course deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting course:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });

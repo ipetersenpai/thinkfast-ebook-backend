@@ -3,7 +3,7 @@ const express = require("express");
 const prisma = require("../../models/prisma");
 const router = express.Router();
 
-// 📌 Enroll multiple students
+// 📌 Enroll multiple students and auto-assign courses
 router.post("/", async (req, res) => {
   const students = req.body;
 
@@ -12,9 +12,12 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const newEnrolledStudents = await prisma.$transaction(
-      students.map((student) =>
-        prisma.enrolledStudent.create({
+    const result = await prisma.$transaction(async (tx) => {
+      const enrolledResults = [];
+
+      for (const student of students) {
+        // Step 1: Create enrolled student
+        const enrolledStudent = await tx.enrolledStudent.create({
           data: {
             term: student.term,
             student_session_id: student.student_session_id,
@@ -25,16 +28,38 @@ router.post("/", async (req, res) => {
             middlename: student.middlename || null,
             year_level: student.year_level,
           },
-        })
-      )
-    );
+        });
 
-    res.status(201).json(newEnrolledStudents);
+        // Step 2: Fetch courses matching the student's year_level and term
+        const matchingCourses = await tx.course.findMany({
+          where: {
+            year_level: student.year_level,
+            term: student.term,
+          },
+        });
+
+        // Step 3: Assign courses to the enrolled student
+        await tx.studentAssignCourses.createMany({
+          data: matchingCourses.map((course) => ({
+            term: student.term,
+            enrolled_student_id: enrolledStudent.id,
+            course_id: course.id,
+          })),
+        });
+
+        enrolledResults.push(enrolledStudent);
+      }
+
+      return enrolledResults;
+    });
+
+    res.status(201).json(result);
   } catch (error) {
     console.error("Error enrolling students:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // 📌 Get all students by term
 router.get("/term/:term", async (req, res) => {
@@ -185,22 +210,36 @@ router.get("/by-faculty/:facultyId/term/:term", async (req, res) => {
 
 // 📌 Delete a student by ID
 router.delete("/:id", async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-      await prisma.enrolledStudent.delete({
-        where: { id: parseInt(id) }
-      });
+  try {
+    const studentId = parseInt(id);
 
-      res.status(200).json({ message: `Student with ID ${id} deleted successfully.` });
-    } catch (error) {
-      console.error("Error deleting student:", error);
-      if (error.code === 'P2025') {
-        return res.status(404).json({ message: "Student not found" });
-      }
-      res.status(500).json({ message: "Internal server error" });
+    // Delete related StudentAssignCourses
+    await prisma.studentAssignCourses.deleteMany({
+      where: { enrolled_student_id: studentId },
+    });
+
+    // Delete related StudentPerformanceTask
+    await prisma.studentPerformanceTask.deleteMany({
+      where: { student_id: studentId },
+    });
+
+    // Now delete the EnrolledStudent
+    await prisma.enrolledStudent.delete({
+      where: { id: studentId },
+    });
+
+    res.status(200).json({ message: `Student with ID ${id} deleted successfully.` });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Student not found" });
     }
-  });
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 
 module.exports = router;
