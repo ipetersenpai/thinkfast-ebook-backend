@@ -76,3 +76,4 @@ Example routes:
 ✅ Routes are organized under `/routes`
 
 
+npx prisma db push

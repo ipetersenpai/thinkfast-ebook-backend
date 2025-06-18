@@ -175,15 +175,14 @@ model UserAnswer {
   id                 Int     @id @default(autoincrement())
   user_attempt_id    Int
   question_id        Int
-  selected_option_id Int?   // Only used for multiple_choice and true_false
+  selected_option_id Int? // Only used for multiple_choice and true_false
   is_correct         Boolean
-  input_answer       String?   @db.Text // used for enumeration and essay
+  input_answer       String? @db.Text // used for enumeration and essay
 
   userAttempt    UserAttempt     @relation(fields: [user_attempt_id], references: [id])
   question       Question        @relation(fields: [question_id], references: [id], onDelete: Cascade)
   selectedOption QuestionOption? @relation(fields: [selected_option_id], references: [id])
 }
-
 
 enum QuestionType {
   multiple_choice
@@ -229,6 +228,18 @@ model StudentPerformanceTask {
   created_at                DateTime @default(now())
   updated_at                DateTime @updatedAt
 
-  enrolledStudent EnrolledStudent @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  enrolledStudent      EnrolledStudent      @relation(fields: [student_id], references: [id], onDelete: Cascade)
   performanceTaskScore PerformanceTaskScore @relation(fields: [performance_task_score_id], references: [id], onDelete: Cascade)
 }
+
+model LoginLogs {
+  id          Int      @id @default(autoincrement())
+  device_name String   @db.VarChar(150)
+  student_id  Int
+  ip_address  String   @db.VarChar(100)
+  mac_address String   @db.VarChar(100)
+  status      String   @db.VarChar(20)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
+

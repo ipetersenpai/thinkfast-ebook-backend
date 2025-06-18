@@ -176,16 +176,49 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
+    const courseId = Number(id);
+
     const existingCourse = await prisma.course.findUnique({
-      where: { id: Number(id) },
+      where: { id: courseId },
     });
 
     if (!existingCourse) {
       return res.status(404).json({ message: "Course not found" });
     }
 
+    // Step 1: Get all lesson IDs under the course
+    const lessons = await prisma.lesson.findMany({
+      where: { course_id: courseId },
+      select: { id: true },
+    });
+
+    const lessonIds = lessons.map((l) => l.id);
+
+    // Step 2: Delete dependent entities of lessons
+    if (lessonIds.length > 0) {
+      await prisma.content.deleteMany({
+        where: { lesson_id: { in: lessonIds } },
+      });
+
+      await prisma.assessment.deleteMany({
+        where: { lesson_id: { in: lessonIds } },
+      });
+    }
+
+    // Step 3: Delete lessons
+    await prisma.lesson.deleteMany({
+      where: { course_id: courseId },
+    });
+
+    // Step 4: Delete other course-related entities
+    await prisma.ebook.deleteMany({ where: { course_id: courseId } });
+    await prisma.assessment.deleteMany({ where: { course_id: courseId } });
+    await prisma.performanceTask.deleteMany({ where: { course_id: courseId } });
+    await prisma.studentCourse.deleteMany({ where: { course_id: courseId } });
+
+    // Step 5: Finally, delete the course itself
     await prisma.course.delete({
-      where: { id: Number(id) },
+      where: { id: courseId },
     });
 
     res.status(200).json({ message: "Course deleted successfully" });
@@ -194,5 +227,7 @@ router.delete("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
 
 module.exports = router;

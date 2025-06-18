@@ -18,7 +18,8 @@ const performanceTaskRoutes = require("./routes/faculty/performanceTaskRoute");
 const studentAttemptRoute = require("./routes/faculty/studentAttemptRoute");
 const scoreHistoryRoute = require("./routes/administrative/scoreHistoryRoute");
 const statisticRoutes = require("./routes/global/statisticRoutes");
-
+const uploadRoutes = require("./routes/global/uploadsRoutes");
+const loginLogsRoutes = require("./routes/global/loginLogsRoutes");
 
 require("dotenv").config();
 
@@ -104,6 +105,15 @@ app.use("/api/student-attempts", verifyToken, studentAttemptRoute);
 
 // Protected routes for statistics
 app.use("/api/statistics", verifyToken, statisticRoutes);
+
+// ========================
+// Unprotected Routes
+// ========================
+
+app.use('/api/login-attempts', loginLogsRoutes);
+
+// routes for upload
+app.use("/api/upload", uploadRoutes);
 
 // ========================
 // Protected routes for tablets
