@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    cb(null, file.fieldname + "-" + uniqueSuffix + ext);
+    cb(null, "image-" + uniqueSuffix + ext); // Changed to ensure consistent naming
   },
 });
 
@@ -31,47 +31,57 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Initialize multer
+// Initialize multer with no field name restrictions
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB
   },
-});
+}).any(); // Changed from .single() to .any() to accept any field name
 
 // Upload Route
-router.post(
-  "/",
-  upload.single("uploadFile"), // Must match frontend field name
-  async (req, res) => {
+router.post("/", (req, res) => {
+  upload(req, res, async function (err) {
     try {
-      if (!req.file) {
-        return res
-          .status(400)
-          .json({ errorMessage: "No file uploaded", resultCode: "error" });
+      if (err) {
+        console.error("Upload error:", err);
+        return res.status(400).json({
+          errorMessage: err.message,
+          resultCode: "error"
+        });
       }
 
-      const filePath = `/uploads/etc/${req.file.filename}`;
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({
+          errorMessage: "No file uploaded",
+          resultCode: "error"
+        });
+      }
+
+      // SunEditor sends multiple files, but we'll just use the first one
+      const uploadedFile = req.files[0];
+      const filePath = `/uploads/etc/${uploadedFile.filename}`;
       const fullUrl = `${req.protocol}://${req.get("host")}${filePath}`;
 
       res.status(200).json({
         result: [
           {
             url: fullUrl,
-            name: req.file.originalname,
+            name: uploadedFile.originalname,
           },
         ],
         errorMessage: "",
         resultCode: "success",
       });
     } catch (error) {
-      console.error("Upload error:", error);
-      res
-        .status(500)
-        .json({ errorMessage: "Failed to upload file", resultCode: "error" });
+      console.error("Server error:", error);
+      res.status(500).json({
+        errorMessage: "Failed to upload file",
+        resultCode: "error"
+      });
     }
-  }
-);
+  });
+});
 
 module.exports = router;
