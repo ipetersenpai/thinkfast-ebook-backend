@@ -4,44 +4,53 @@ const prisma = require("../../models/prisma");
 const router = express.Router();
 
 // GET /api/student/enrolled-courses/:session_id/:student_id
-router.get("/enrolled-courses/:student_session_id/:student_id", async (req, res) => {
-  const { student_session_id, student_id } = req.params;
+router.get(
+  "/enrolled-courses/:student_session_id/:student_id",
+  async (req, res) => {
+    const { student_session_id, student_id } = req.params;
 
-  try {
-    const enrolledStudent = await prisma.enrolledStudent.findFirst({
-      where: {
-        student_session_id: Number(student_session_id),
-        student_id: Number(student_id),
-      },
-      include: {
-        StudentAssignCourses: {
-          include: {
-            course: {
-              select: {
-                id: true,
-                title: true,
-                description: true,
-                faculty_id: true,
-                faculty_full_name: true,
+    try {
+      const enrolledStudent = await prisma.enrolledStudent.findFirst({
+        where: {
+          student_session_id: Number(student_session_id),
+          student_id: Number(student_id),
+        },
+        include: {
+          StudentAssignCourses: {
+            include: {
+              course: {
+                select: {
+                  id: true,
+                  title: true,
+                  description: true,
+                  faculty_id: true,
+                  faculty_full_name: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
 
-    if (!enrolledStudent) {
-      return res.status(404).json({ status: "error", message: "Student not found" });
+      if (!enrolledStudent) {
+        return res
+          .status(404)
+          .json({ status: "error", message: "Student not found" });
+      }
+
+      const assignedCourses = enrolledStudent.StudentAssignCourses.map(
+        (assign) => assign.course
+      );
+
+      return res
+        .status(200)
+        .json({ status: "success", courses: assignedCourses });
+    } catch (error) {
+      console.error("Error fetching assigned courses:", error);
+      return res.status(500).json({ status: "error", message: "Server error" });
     }
-
-    const assignedCourses = enrolledStudent.StudentAssignCourses.map((assign) => assign.course);
-
-    return res.status(200).json({ status: "success", courses: assignedCourses });
-  } catch (error) {
-    console.error("Error fetching assigned courses:", error);
-    return res.status(500).json({ status: "error", message: "Server error" });
   }
-});
+);
 // GET /api/student/lessons-with-content/:course_id
 router.get("/lessons-with-content/:course_id", async (req, res) => {
   const { course_id } = req.params;
@@ -76,7 +85,7 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
                 submitted_at: true,
               },
               orderBy: {
-                score: 'desc', // Order by score to easily get highest score
+                score: "desc", // Order by score to easily get highest score
               },
             },
           },
@@ -88,9 +97,9 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
     });
 
     // Map assessments to include student performance data
-    const lessonsWithFormattedAssessments = lessons.map(lesson => ({
+    const lessonsWithFormattedAssessments = lessons.map((lesson) => ({
       ...lesson,
-      assessments: lesson.assessments.map(a => {
+      assessments: lesson.assessments.map((a) => {
         const attempts = a.attempts;
         const highestScore = attempts.length > 0 ? attempts[0].score : null;
         const attemptCount = attempts.length;
@@ -105,12 +114,17 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
           date_close: a.date_close,
           total_questions: a._count.questions,
           total_points: a.total_points,
-          student_performance: student_id ? {
-            highest_score: highestScore,
-            score_display: highestScore !== null ? `${highestScore}/${a.total_points}` : null,
-            attempt_count: attemptCount,
-            attempt_display: `${attemptCount}/${a.attempt_limit}`,
-          } : null,
+          student_performance: student_id
+            ? {
+                highest_score: highestScore,
+                score_display:
+                  highestScore !== null
+                    ? `${highestScore}/${a.total_points}`
+                    : null,
+                attempt_count: attemptCount,
+                attempt_display: `${attemptCount}/${a.attempt_limit}`,
+              }
+            : null,
         };
       }),
     }));
@@ -125,9 +139,6 @@ router.get("/lessons-with-content/:course_id", async (req, res) => {
     return res.status(500).json({ status: "error", message: "Server error" });
   }
 });
-
-
-
 
 // GET /api/student/assessment/:assessment_id/questions
 router.get("/assessment/:assessment_id/questions", async (req, res) => {
@@ -163,14 +174,19 @@ router.get("/assessment/:assessment_id/questions", async (req, res) => {
     });
 
     if (!assessment) {
-      return res.status(404).json({ status: "error", message: "Assessment not found" });
+      return res
+        .status(404)
+        .json({ status: "error", message: "Assessment not found" });
     }
 
     // Shuffle questions using Fisher-Yates algorithm
     const shuffledQuestions = [...assessment.questions];
     for (let i = shuffledQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [shuffledQuestions[i], shuffledQuestions[j]] = [shuffledQuestions[j], shuffledQuestions[i]];
+      [shuffledQuestions[i], shuffledQuestions[j]] = [
+        shuffledQuestions[j],
+        shuffledQuestions[i],
+      ];
     }
 
     return res.status(200).json({
@@ -189,9 +205,6 @@ router.get("/assessment/:assessment_id/questions", async (req, res) => {
     return res.status(500).json({ status: "error", message: "Server error" });
   }
 });
-
-
-
 
 // POST /api/student/submit-attempt
 router.post("/submit-attempt", async (req, res) => {
@@ -250,8 +263,8 @@ router.post("/submit-attempt", async (req, res) => {
         });
 
         // Check for exact match (case-insensitive)
-        const match = correctOptions.find(opt =>
-          opt.description?.trim().toLowerCase() === input
+        const match = correctOptions.find(
+          (opt) => opt.description?.trim().toLowerCase() === input
         );
 
         if (match) {
@@ -300,12 +313,11 @@ router.post("/submit-attempt", async (req, res) => {
   }
 });
 
-
 // GET /api/academic-year
 router.get("/academic-year", async (req, res) => {
   try {
     const years = await prisma.academic_Year.findMany({
-      orderBy: { created_at: 'desc' },
+      orderBy: { created_at: "desc" },
     });
     res.json(years);
   } catch (error) {
@@ -314,15 +326,12 @@ router.get("/academic-year", async (req, res) => {
   }
 });
 
-
-
-// GET /api/score-history/:studentId/:term
+// GET /api/student/score-history/:studentId/:term
 router.get("/score-history/:studentId/:term", async (req, res) => {
   const studentId = parseInt(req.params.studentId);
   const term = req.params.term;
 
   try {
-    // 1. Verify the term exists
     const termData = await prisma.academic_Year.findFirst({
       where: { term },
     });
@@ -331,7 +340,6 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
       return res.status(404).json({ error: "Term not found" });
     }
 
-    // 2. Find enrolled student record for this student_id in the term
     const enrolledStudent = await prisma.enrolledStudent.findFirst({
       where: {
         student_id: studentId,
@@ -352,7 +360,6 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
       (sc) => sc.course_id
     );
 
-    // 3. For each course, fetch assessment and performance task scores
     const coursesWithScores = await Promise.all(
       assignedCourseIds.map(async (courseId) => {
         const course = await prisma.course.findUnique({
@@ -362,13 +369,14 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
               include: {
                 attempts: {
                   where: { student_id: studentId },
+                  orderBy: { score: 'desc' }, // Order attempts by score descending
                 },
               },
             },
             performanceTaskScores: {
               include: {
                 studentPerformanceTasks: {
-                  where: { student_id: enrolledStudent.id }, // uses EnrolledStudent.id
+                  where: { student_id: enrolledStudent.id },
                 },
               },
             },
@@ -376,10 +384,10 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
         });
 
         const assessmentScores = course.assessments.map((a) => {
-          const attempt = a.attempts[0]; // first attempt
+          const highestAttempt = a.attempts[0]; // Get the highest score attempt
           return {
             title: a.title,
-            score: attempt?.score ?? 0,
+            score: highestAttempt ? highestAttempt.score : null, // Return null if no attempts
             total_points: a.total_points,
           };
         });
@@ -388,7 +396,7 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
           const scoreRecord = pt.studentPerformanceTasks?.[0];
           return {
             title: pt.title || "Performance Task",
-            score: scoreRecord?.score ?? 0,
+            score: scoreRecord?.score ?? null, // Return null if no score
             total_points: pt.total_points,
           };
         });
@@ -400,7 +408,6 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
       })
     );
 
-    // 4. Include student fullname and year_level
     const fullname = `${enrolledStudent.firstname} ${
       enrolledStudent.middlename ? enrolledStudent.middlename + " " : ""
     }${enrolledStudent.lastname}`;
@@ -415,9 +422,5 @@ router.get("/score-history/:studentId/:term", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
-
 
 module.exports = router;

@@ -9,7 +9,6 @@ router.get("/:studentId/:term", async (req, res) => {
   const term = req.params.term;
 
   try {
-    // 1. Verify the term exists
     const termData = await prisma.academic_Year.findFirst({
       where: { term },
     });
@@ -18,7 +17,6 @@ router.get("/:studentId/:term", async (req, res) => {
       return res.status(404).json({ error: "Term not found" });
     }
 
-    // 2. Find enrolled student record for this student_id in the term
     const enrolledStudent = await prisma.enrolledStudent.findFirst({
       where: {
         student_id: studentId,
@@ -39,7 +37,6 @@ router.get("/:studentId/:term", async (req, res) => {
       (sc) => sc.course_id
     );
 
-    // 3. For each course, fetch assessment and performance task scores
     const coursesWithScores = await Promise.all(
       assignedCourseIds.map(async (courseId) => {
         const course = await prisma.course.findUnique({
@@ -49,13 +46,14 @@ router.get("/:studentId/:term", async (req, res) => {
               include: {
                 attempts: {
                   where: { student_id: studentId },
+                  orderBy: { score: "desc" },
                 },
               },
             },
             performanceTaskScores: {
               include: {
                 studentPerformanceTasks: {
-                  where: { student_id: enrolledStudent.id }, // uses EnrolledStudent.id
+                  where: { student_id: enrolledStudent.id },
                 },
               },
             },
@@ -63,10 +61,10 @@ router.get("/:studentId/:term", async (req, res) => {
         });
 
         const assessmentScores = course.assessments.map((a) => {
-          const attempt = a.attempts[0]; // first attempt
+          const highestAttempt = a.attempts[0];
           return {
             title: a.title,
-            score: attempt?.score ?? 0,
+            score: highestAttempt ? highestAttempt.score : null,
             total_points: a.total_points,
           };
         });
@@ -75,7 +73,7 @@ router.get("/:studentId/:term", async (req, res) => {
           const scoreRecord = pt.studentPerformanceTasks?.[0];
           return {
             title: pt.title || "Performance Task",
-            score: scoreRecord?.score ?? 0,
+            score: scoreRecord?.score ?? null,
             total_points: pt.total_points,
           };
         });
@@ -87,7 +85,6 @@ router.get("/:studentId/:term", async (req, res) => {
       })
     );
 
-    // 4. Include student fullname and year_level
     const fullname = `${enrolledStudent.firstname} ${
       enrolledStudent.middlename ? enrolledStudent.middlename + " " : ""
     }${enrolledStudent.lastname}`;
@@ -102,5 +99,6 @@ router.get("/:studentId/:term", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 module.exports = router;
