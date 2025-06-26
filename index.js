@@ -76,9 +76,6 @@ app.use("/api/assign-course", verifyToken, assignCourseRoutes);
 // Protected routes for academic year
 app.use("/api/academic_year", verifyToken, academicYearRoutes);
 
-// Protected routes for ebook
-app.use("/api/ebook", verifyToken, eBooksRoutes);
-
 // Protected routes for video gallery
 app.use("/api/video-gallery", verifyToken, videoGalleryRoutes);
 
@@ -109,6 +106,9 @@ app.use("/api/statistics", verifyToken, statisticRoutes);
 // ========================
 // Unprotected Routes
 // ========================
+
+// routes for ebook
+app.use("/api/ebook", eBooksRoutes);
 
 app.use('/api/login-attempts', loginLogsRoutes);
 

@@ -73,4 +73,64 @@ router.post('/check', async (req, res) => {
   }
 });
 
+router.patch('/approve/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  if (!id) {
+    return res.status(400).json({ error: 'Missing login log ID' });
+  }
+
+  try {
+    const updatedLog = await prisma.loginLogs.update({
+      where: { id },
+      data: { status: 'approved' },
+    });
+
+    res.status(200).json({
+      message: 'Login log approved successfully',
+      log: updatedLog,
+    });
+  } catch (error) {
+    console.error('Error approving login log:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const logs = await prisma.loginLogs.findMany({
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
+
+    res.status(200).json(logs);
+  } catch (error) {
+    console.error('Error fetching login logs:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// ✅ Delete login log by ID
+router.delete('/:id', async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  if (!id) {
+    return res.status(400).json({ error: 'Missing login log ID' });
+  }
+
+  try {
+    const deletedLog = await prisma.loginLogs.delete({
+      where: { id },
+    });
+
+    res.status(200).json({
+      message: 'Login log deleted successfully',
+      log: deletedLog,
+    });
+  } catch (error) {
+    console.error('Error deleting login log:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 module.exports = router;
