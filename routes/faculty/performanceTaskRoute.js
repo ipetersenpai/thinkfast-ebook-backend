@@ -183,6 +183,51 @@ router.post("/score", async (req, res) => {
 });
 
 
+// Update a performance task by ID
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { title, total_points } = req.body;
+
+  if (!title || !total_points) {
+    return res.status(400).json({ message: "Title and total points are required." });
+  }
+
+  const taskId = parseInt(id);
+
+  try {
+    // Step 1: Check for any student score that exceeds the new total_points
+    const violatingScore = await prisma.studentPerformanceTask.findFirst({
+      where: {
+        performance_task_score_id: taskId,
+        score: {
+          gt: total_points,
+        },
+      },
+    });
+
+    if (violatingScore) {
+      return res.status(400).json({
+        message: `Cannot update total points to ${total_points}. A student has a score of ${violatingScore.score}, which exceeds the new total.`,
+      });
+    }
+
+    // Step 2: Proceed with update
+    const updatedTask = await prisma.performanceTaskScore.update({
+      where: { id: taskId },
+      data: { title, total_points },
+    });
+
+    res.json({
+      message: "Performance task updated successfully.",
+      updatedTask,
+    });
+  } catch (error) {
+    console.error("Error updating performance task:", error);
+    res.status(500).json({ message: "Failed to update performance task." });
+  }
+});
+
+
 
 
 module.exports = router;
