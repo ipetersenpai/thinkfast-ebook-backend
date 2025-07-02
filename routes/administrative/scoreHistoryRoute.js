@@ -100,7 +100,6 @@ router.get("/:studentId/:term", async (req, res) => {
   }
 });
 
-
 // GET Score history for a specific course
 router.get("/:courseId/:studentId/:term", async (req, res) => {
   const studentId = parseInt(req.params.studentId);
@@ -129,7 +128,9 @@ router.get("/:courseId/:studentId/:term", async (req, res) => {
     });
 
     if (!enrolledStudent) {
-      return res.status(404).json({ error: "Student is not enrolled in the specified term" });
+      return res
+        .status(404)
+        .json({ error: "Student is not enrolled in the specified term" });
     }
 
     // 3. Check if student is assigned to the specific course
@@ -138,7 +139,9 @@ router.get("/:courseId/:studentId/:term", async (req, res) => {
     );
 
     if (!isEnrolledInCourse) {
-      return res.status(403).json({ error: "Student is not enrolled in this course" });
+      return res
+        .status(403)
+        .json({ error: "Student is not enrolled in this course" });
     }
 
     // 4. Fetch course with scores
@@ -200,6 +203,102 @@ router.get("/:courseId/:studentId/:term", async (req, res) => {
   }
 });
 
+// GET all students' scores in a course for a specific term
+router.get("/:courseId/term/:term/scores", async (req, res) => {
+  const courseId = parseInt(req.params.courseId);
+  const term = req.params.term;
 
+  if (isNaN(courseId)) {
+    return res.status(400).json({ error: "Invalid course ID" });
+  }
+
+  try {
+    // Check if course exists
+    const course = await prisma.course.findUnique({
+      where: { id: courseId },
+      include: {
+        assessments: true,
+        performanceTaskScores: true,
+      },
+    });
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // Get all enrolled students assigned to the course in the specified term
+    const enrolledStudents = await prisma.enrolledStudent.findMany({
+      where: {
+        term,
+        StudentAssignCourses: {
+          some: { course_id: courseId },
+        },
+      },
+      include: {
+        StudentAssignCourses: true,
+      },
+    });
+
+    // Build response
+    const studentsWithScores = await Promise.all(
+      enrolledStudents.map(async (student) => {
+        const fullName = `${student.firstname} ${
+          student.middlename ? student.middlename + " " : ""
+        }${student.lastname}`;
+
+        // Fetch attempts for all assessments
+        const assessmentScores = await Promise.all(
+          course.assessments.map(async (a) => {
+            const attempt = await prisma.userAttempt.findFirst({
+              where: {
+                assessment_id: a.id,
+                student_id: student.student_id,
+              },
+              orderBy: {
+                submitted_at: "asc",
+              },
+            });
+
+            return {
+              title: a.title,
+              score: attempt?.score ?? 0,
+              total_points: a.total_points,
+            };
+          })
+        );
+
+        // Fetch scores for performance tasks
+        const performanceScores = await Promise.all(
+          course.performanceTaskScores.map(async (pt) => {
+            const scoreRecord = await prisma.studentPerformanceTask.findFirst({
+              where: {
+                performance_task_score_id: pt.id,
+                student_id: student.id,
+              },
+            });
+
+            return {
+              title: pt.title || "Performance Task",
+              score: scoreRecord?.score ?? 0,
+              total_points: pt.total_points,
+            };
+          })
+        );
+
+        return {
+          student_id: student.student_id,
+          fullname: fullName,
+          year_level: student.year_level,
+          assessments: [...assessmentScores, ...performanceScores],
+        };
+      })
+    );
+
+    res.json(studentsWithScores);
+  } catch (error) {
+    console.error("Error fetching all student scores:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = router;

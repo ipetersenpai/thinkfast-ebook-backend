@@ -206,7 +206,6 @@ router.get("/assessment/:assessment_id/questions", async (req, res) => {
   }
 });
 
-// POST /api/student/submit-attempt
 router.post("/submit-attempt", async (req, res) => {
   const { student_id, assessment_id, answers } = req.body;
 
@@ -214,7 +213,6 @@ router.post("/submit-attempt", async (req, res) => {
     const started_at = new Date();
     let score = 0;
 
-    // Create the user attempt
     const createdAttempt = await prisma.userAttempt.create({
       data: {
         student_id,
@@ -226,7 +224,6 @@ router.post("/submit-attempt", async (req, res) => {
 
     const attemptId = createdAttempt.id;
 
-    // Process each answer
     for (const answer of answers) {
       let isCorrect = false;
       let selectedOptionId = null;
@@ -237,35 +234,35 @@ router.post("/submit-attempt", async (req, res) => {
 
       if (!question) continue;
 
-      // Case 1: Multiple choice or true/false
+      // Case 1: Multiple Choice / True or False
       if (answer.selected_option_id) {
         const option = await prisma.questionOption.findUnique({
           where: { id: answer.selected_option_id },
         });
 
         isCorrect = option?.is_correct || false;
-        selectedOptionId = answer.selected_option_id;
+        selectedOptionId = option?.id || null;
       }
 
-      // Case 2: identifcation input
-      else if (answer.input_answer) {
+      // Case 2: Identification input
+      else if (
+        question.type === "identification" &&
+        typeof answer.input_answer === "string"
+      ) {
         const input = answer.input_answer.trim().toLowerCase();
 
-        // Fetch all correct options for the question
         const correctOptions = await prisma.questionOption.findMany({
           where: {
-            question_id: answer.question_id,
+            question_id: question.id,
             is_correct: true,
-            description: {
-              not: null,
-            },
+            description: { not: null },
           },
         });
 
-        // Check for exact match (case-insensitive)
-        const match = correctOptions.find(
-          (opt) => opt.description?.trim().toLowerCase() === input
-        );
+        const match = correctOptions.find((opt) => {
+          const correctText = opt.description?.trim().toLowerCase();
+          return correctText === input;
+        });
 
         if (match) {
           isCorrect = true;
@@ -278,19 +275,23 @@ router.post("/submit-attempt", async (req, res) => {
         score += question.points || 0;
       }
 
-      // Save the user's answer
+      // Build userAnswer data
+      const userAnswerData = {
+        user_attempt_id: attemptId,
+        question_id: answer.question_id,
+        is_correct: isCorrect,
+        input_answer: answer.input_answer || null,
+      };
+
+      if (selectedOptionId !== null) {
+        userAnswerData.selected_option_id = selectedOptionId;
+      }
+
       await prisma.userAnswer.create({
-        data: {
-          user_attempt_id: attemptId,
-          question_id: answer.question_id,
-          selected_option_id: selectedOptionId,
-          is_correct: isCorrect,
-          input_answer: answer.input_answer || null,
-        },
+        data: userAnswerData,
       });
     }
 
-    // Update the user attempt with final score and submission time
     await prisma.userAttempt.update({
       where: { id: attemptId },
       data: {
@@ -312,6 +313,7 @@ router.post("/submit-attempt", async (req, res) => {
     });
   }
 });
+
 
 // GET /api/academic-year
 router.get("/academic-year", async (req, res) => {
