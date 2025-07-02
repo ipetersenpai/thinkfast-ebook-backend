@@ -1,0 +1,2883 @@
+{
+	"info": {
+		"_postman_id": "28203ba6-909c-4d76-8749-a5a5879d0321",
+		"name": "ThinkFast Tablet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24785765",
+		"_collection_link": "https://capstone-uccp-cdo.postman.co/workspace/My-Workspace~75bd20cb-372a-4393-8647-63a7bf4ab843/collection/24785765-28203ba6-909c-4d76-8749-a5a5879d0321?action=share&source=collection_link&creator=24785765"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Add Users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY1ODY0NTIsImV4cCI6MTc0NjU5MDA1Mn0.x627ExZ6QvYyS3ZEyFMaSBOId-PKy3FiZSDXD7wQ88U",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstname\": \"Peter Francis \",\n  \"lastname\": \"Robante\",\n  \"middlename\": \"Cabigon\",\n  \"username\": \"admin\",\n  \"password\": \"ipetersenpai\",\n  \"email\": \"robantepeterfran@gmail.com\",\n  \"role\": \"superadmin\",\n  \"status\": \"active\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://128.199.66.214:3500/api/users",
+							"protocol": "http",
+							"host": [
+								"128",
+								"199",
+								"66",
+								"214"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2MDA5MjIsImV4cCI6MTc0NjYwNDUyMn0.nexW654oH9xzGtP-5Cg-PbXHSTs4DCGPtCkwmCBc_JI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"middlename\": \"M\",\n  \"username\": \"admin\",\n  \"password\": \"admin123\",\n  \"email\": \"john@example.com\",\n  \"role\": \"user\",\n  \"status\": \"active\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/users/update/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"users",
+								"update",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MjUyMjQsImV4cCI6MTc1NTQwMTIyNH0.4UX8KjRpl9HIHt-J7FAMIH3cMo4jF54DmWWMG02EPwM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/users",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MjUyMjQsImV4cCI6MTc1NTQwMTIyNH0.4UX8KjRpl9HIHt-J7FAMIH3cMo4jF54DmWWMG02EPwM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/get-user/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"get-user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://128.199.66.214:3500/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"128",
+								"199",
+								"66",
+								"214"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "academic year",
+			"item": [
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2Mjc1NDQsImV4cCI6MTc1NDQwMzU0NH0.QYoBJc-MJkVESshj-jhATliqYEEAA9xfA7w-2UXRCaI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/academic_year/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"academic_year",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2Mjc1NDQsImV4cCI6MTc1NDQwMzU0NH0.QYoBJc-MJkVESshj-jhATliqYEEAA9xfA7w-2UXRCaI",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/academic_year/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"academic_year",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2Mjc1NDQsImV4cCI6MTc1NDQwMzU0NH0.QYoBJc-MJkVESshj-jhATliqYEEAA9xfA7w-2UXRCaI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"term\": \"2425\",\n    \"description\": \"Academic Year 2024-2025\",\n    \"status\": \"active\",\n    \"start_date\": \"2024-06-01\",\n    \"end_date\": \"2025-03-31\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/academic_year/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"academic_year",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2Mjc1NDQsImV4cCI6MTc1NDQwMzU0NH0.QYoBJc-MJkVESshj-jhATliqYEEAA9xfA7w-2UXRCaI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"term\": \"2223\",\n    \"description\": \"Academic Year 2022-2023\",\n    \"status\": \"inactive\",\n    \"start_date\": \"2024-06-01\",\n    \"end_date\": \"2025-03-31\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/academic_year/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"academic_year",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDY2Mjc1NDQsImV4cCI6MTc1NDQwMzU0NH0.QYoBJc-MJkVESshj-jhATliqYEEAA9xfA7w-2UXRCaI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"term\": \"2223\",\n    \"description\": \"Academic Year 2022-2023\",\n    \"status\": \"inactive\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/academic_year/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"academic_year",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n    \"term\": \"2425\",\n    \"title\": \"Sample\",\n    \"description\": \"Academic Year 2024-2025\",\n    \"faculty_id\": 2, \n    \"faculty_full_name\": \"John Doe\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/courses",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/courses?term=2526",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/courses/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"courses",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/courses/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"courses",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List of teachers",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/courses/teachers",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"courses",
+								"teachers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enrolled Student",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"gender\": \"male\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"gender\": \"male\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"gender\": \"male\",\n    \"year_level\": \"3\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 104,\n    \"student_id\": 20230004,\n    \"session_id\": 1,\n    \"firstname\": \"Michael\",\n    \"lastname\": \"Brown\",\n    \"middlename\": \"James\",\n    \"gender\": \"male\",\n    \"year_level\": \"1\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 105,\n    \"student_id\": 20230005,\n    \"session_id\": 1,\n    \"firstname\": \"Olivia\",\n    \"lastname\": \"Davis\",\n    \"middlename\": \"Grace\",\n    \"gender\": \"male\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 106,\n    \"student_id\": 20230006,\n    \"session_id\": 1,\n    \"firstname\": \"Daniel\",\n    \"lastname\": \"Martinez\",\n    \"middlename\": null,\n    \"gender\": \"male\",\n    \"year_level\": \"3\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 107,\n    \"student_id\": 20230007,\n    \"session_id\": 1,\n    \"firstname\": \"Sophia\",\n    \"lastname\": \"Garcia\",\n    \"middlename\": \"Isabel\",\n    \"gender\": \"male\",\n    \"year_level\": \"1\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": " {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe d\",\n    \"middlename\": \"Elizabeth\",\n    \"gender\": \"male\",\n    \"year_level\": \"1\"\n  }\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Term",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/term/2526",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"term",
+								"2526"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Faculty",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/by-faculty/:faculty_id:/term/:term:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"by-faculty",
+								":faculty_id:",
+								"term",
+								":term:"
+							],
+							"variable": [
+								{
+									"key": "faculty_id:",
+									"value": "4"
+								},
+								{
+									"key": "term:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Faculty and Course",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/by-faculty/:faculty_id:/term/:term:/course/:courseId:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"by-faculty",
+								":faculty_id:",
+								"term",
+								":term:",
+								"course",
+								":courseId:"
+							],
+							"variable": [
+								{
+									"key": "faculty_id:",
+									"value": "4"
+								},
+								{
+									"key": "term:",
+									"value": "2526"
+								},
+								{
+									"key": "courseId:",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assign Courses",
+			"item": [
+				{
+					"name": "Get Courses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/assign-course?term=2526&student_id=1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"assign-course"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "2526"
+								},
+								{
+									"key": "student_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign courses per student",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/assign-course/enrolled/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"assign-course",
+								"enrolled",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "E-Book",
+			"item": [
+				{
+					"name": "video-gallery",
+					"item": [
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/ebook/video-gallery/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"ebook",
+										"video-gallery",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add Video",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "video",
+											"type": "file",
+											"src": "/Users/ipetersenpai/Downloads/gggggggg.mp4"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/ebook/video-gallery/",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"ebook",
+										"video-gallery",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All Videos",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "multipart/form-data",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/video-gallery",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"video-gallery"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Sample omly",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "sample again",
+									"type": "text"
+								},
+								{
+									"key": "cover_image",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "content_html",
+									"type": "file",
+									"src": "/Users/ipetersenpai/Downloads/dummy_test.html"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/ebook/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"ebook",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch Data",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/ebook/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"ebook",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fetch by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/ebook/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"ebook",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Sample omly",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "sample again",
+									"type": "text"
+								},
+								{
+									"key": "cover_image",
+									"type": "file",
+									"src": "/Users/ipetersenpai/Downloads/cover_page_6.jpg"
+								},
+								{
+									"key": "content_html",
+									"type": "file",
+									"src": "/Users/ipetersenpai/Downloads/dummy_test.html"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/ebook/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"ebook",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/ebook/3",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"ebook",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Lesson Builder",
+			"item": [
+				{
+					"name": "Assessment Tool",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"title\": \"Sample Assessment 1\",\n  \"description\": \"This is a sample assessment.\",\n  \"assessment_type\": \"QUIZ\",\n  \"total_points\": null,\n  \"time_limit\": 20,\n  \"attempt_limit\": 2,\n  \"course_id\": 1,\n  \"lesson_id\": 1,\n  \"questions\": [\n    {\n      \"question\": \"What is the capital of France?\",\n      \"type\": \"multiple_choice\",\n      \"points\": 5,\n      \"options\": [\n        { \"description\": \"Berlin\", \"is_correct\": false },\n        { \"description\": \"Madrid\", \"is_correct\": false },\n        { \"description\": \"Paris\", \"is_correct\": true },\n        { \"description\": \"Rome\", \"is_correct\": false }\n      ]\n    },\n    {\n      \"question\": \"The sky is blue. (True or False)\",\n      \"type\": \"true_false\",\n      \"points\": 2,\n      \"options\": [\n        { \"description\": \"True\", \"is_correct\": true },\n        { \"description\": \"False\", \"is_correct\": false }\n      ]\n    },\n    {\n      \"question\": \"List the colors of the rainbow.\",\n      \"type\": \"enumeration\",\n      \"points\": 8\n    }\n  ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/assessment",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"assessment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "upload attachment",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/Users/ipetersenpai/Downloads/images.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/upload",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"upload"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assessments",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://127.0.0.1:3500/api/assessment/list/1",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"assessment",
+										"list",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assessment by id",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:3500/api/assessment/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3500",
+									"path": [
+										"api",
+										"assessment",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Lessons",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/lesson-builder/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"lesson-builder",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lesson by ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/lesson-builder/lesson/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"lesson-builder",
+								"lesson",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Lesson",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Introduction to Chemistry\",\n  \"description\": \"<p>This lesson covers basic chemical principles.</p>\",\n  \"course_id\": 1,\n  \"ebooks_id\": 2,\n   \"order_no\": 10,\n    \"is_active\": true,\n  \"attachment_links\": [\n    \"https://example.com/video1\",\n    \"https://example.com/video2\"\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/lesson-builder",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"lesson-builder"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Performance Task",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Final Performance Task\",\n  \"total_points\": 50,\n  \"course_id\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update PT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"id\" : \"\",\n  \"title\": \"Final Performance Task\",\n  \"total_points\": 50\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/:performance_task_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								":performance_task_id:"
+							],
+							"variable": [
+								{
+									"key": "performance_task_id:",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Final Performance Task\",\n  \"total_points\": 50,\n  \"course_id\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/:performance_task_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								":performance_task_id:"
+							],
+							"variable": [
+								{
+									"key": "performance_task_id:",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performance task per Course",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/course/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								"course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Enrolled on Course",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/enrolled-students/:courseId:/:pt_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								"enrolled-students",
+								":courseId:",
+								":pt_id:"
+							],
+							"variable": [
+								{
+									"key": "courseId:",
+									"value": "1"
+								},
+								{
+									"key": "pt_id:",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Record Score",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"student_id\": 12,\n  \"performance_task_score_id\": 5,\n  \"score\": 18\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/score",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								"score"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student Attempt",
+			"item": [
+				{
+					"name": "Student attempt",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student-attempts/:student_id:/:assessment_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student-attempts",
+								":student_id:",
+								":assessment_id:"
+							],
+							"variable": [
+								{
+									"key": "student_id:",
+									"value": "819"
+								},
+								{
+									"key": "assessment_id:",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Score",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 50\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student-attempts/:attemptId:/update-score",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student-attempts",
+								":attemptId:",
+								"update-score"
+							],
+							"variable": [
+								{
+									"key": "attemptId:",
+									"value": "37"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asessment per Course",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student-attempts/assessments/course/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student-attempts",
+								"assessments",
+								"course",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "students per course",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student-attempts/course/:courseId:/students/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student-attempts",
+								"course",
+								":courseId:",
+								"students",
+								"4"
+							],
+							"variable": [
+								{
+									"key": "courseId:",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Score History",
+			"item": [
+				{
+					"name": "Per Student",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/score-history/:student_id:/:academic_year:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"score-history",
+								":student_id:",
+								":academic_year:"
+							],
+							"variable": [
+								{
+									"key": "student_id:",
+									"value": "20230005"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Score per subjects",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/score-history/:course_id:/:student_id:/:academic_year:/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"score-history",
+								":course_id:",
+								":student_id:",
+								":academic_year:",
+								""
+							],
+							"variable": [
+								{
+									"key": "course_id:",
+									"value": ""
+								},
+								{
+									"key": "student_id:",
+									"value": "819"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Students Scores per subjects",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/score-history/:course_id:/term/:academic_year:/scores",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"score-history",
+								":course_id:",
+								"term",
+								":academic_year:",
+								"scores"
+							],
+							"variable": [
+								{
+									"key": "course_id:",
+									"value": "2"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Statistic",
+			"item": [
+				{
+					"name": "Enrolled Students",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/statistics/students/total",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"statistics",
+								"students",
+								"total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Courses",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/statistics/courses/total",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"statistics",
+								"courses",
+								"total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EBooks",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/statistics/ebooks/total",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"statistics",
+								"ebooks",
+								"total"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gender Summary",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/statistics/students/gender-summary/:facultyId:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"statistics",
+								"students",
+								"gender-summary",
+								":facultyId:"
+							],
+							"variable": [
+								{
+									"key": "facultyId:",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tablet API",
+			"item": [
+				{
+					"name": "Courses by Student",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/enrolled-courses/:student_session_id:/:student_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"enrolled-courses",
+								":student_session_id:",
+								":student_id:"
+							],
+							"variable": [
+								{
+									"key": "student_session_id:",
+									"value": "107",
+									"description": "bridgette student session id"
+								},
+								{
+									"key": "student_id:",
+									"value": "20230007",
+									"description": "bridgette student id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lessons",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/lessons-with-content/:course_id:?student_id=20230005",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"lessons-with-content",
+								":course_id:"
+							],
+							"query": [
+								{
+									"key": "student_id",
+									"value": "20230005",
+									"description": "bridgette ID ni sya gikan"
+								}
+							],
+							"variable": [
+								{
+									"key": "course_id:",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assessment",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/assessment/:assessment_id/questions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"assessment",
+								":assessment_id",
+								"questions"
+							],
+							"variable": [
+								{
+									"key": "assessment_id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Attempt",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"student_id\": 20230005,\n  \"assessment_id\": 10,\n  \"answers\": [\n    { \"question_id\": 21, \"selected_option_id\": 48 },\n    { \"question_id\": 22, \"selected_option_id\": 51 },\n        { \"question_id\": 23, \"selected_option_id\": 53 },\n        { \"question_id\": 24, \"input_answer\": \"4\" }, // for the enumeration\n    { \"question_id\": 25, \"input_answer\": \"6\" } // for the enumeration\n  ]\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/submit-attempt",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"submit-attempt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Score History",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/score-history/:student_id:/:academic_year:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"score-history",
+								":student_id:",
+								":academic_year:"
+							],
+							"variable": [
+								{
+									"key": "student_id:",
+									"value": "20230005"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Academic Year",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student/academic-year",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student",
+								"academic-year"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login attempts",
+			"item": [
+				{
+					"name": "save mac address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": \"1001\",\n    \"device_name\": \"sample only\",\n    \"ip_address\": \"127.0.0.1\",\n    \"mac_address\" : \"00-B0-D0-63-C2-26\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/login-attempts",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"login-attempts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if approve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": \"1001\",\n    \"device_name\": \"sample only\",\n    \"ip_address\": \"127.0.0.1\",\n    \"mac_address\" : \"00-B0-D0-63-C2-26\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/login-attempts/check",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"login-attempts",
+								"check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
