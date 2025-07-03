@@ -234,9 +234,7 @@ model StudentPerformanceTask {
 
 model LoginLogs {
   id          Int      @id @default(autoincrement())
-  device_name String   @db.VarChar(150)
   student_id  Int
-  ip_address  String   @db.VarChar(100)
   mac_address String   @db.VarChar(100)
   status      String   @db.VarChar(20)
   created_at  DateTime @default(now())

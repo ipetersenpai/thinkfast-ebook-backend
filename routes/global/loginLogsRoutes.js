@@ -2,10 +2,11 @@ const express = require('express');
 const prisma = require('../../models/prisma');
 const router = express.Router();
 
+// Create login log
 router.post('/', async (req, res) => {
-  const { student_id, device_name, ip_address, mac_address } = req.body;
+  const { student_id, mac_address } = req.body;
 
-  if (!student_id || !device_name || !ip_address || !mac_address) {
+  if (!student_id || !mac_address) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -13,8 +14,6 @@ router.post('/', async (req, res) => {
     const existingLog = await prisma.loginLogs.findFirst({
       where: {
         student_id: parseInt(student_id),
-        device_name,
-        ip_address,
         mac_address,
       },
     });
@@ -29,8 +28,6 @@ router.post('/', async (req, res) => {
     const newLog = await prisma.loginLogs.create({
       data: {
         student_id: parseInt(student_id),
-        device_name,
-        ip_address,
         mac_address,
         status: 'pending',
       },
@@ -43,11 +40,11 @@ router.post('/', async (req, res) => {
   }
 });
 
-// POST /check
+// Check login log approval
 router.post('/check', async (req, res) => {
-  const { student_id, device_name, ip_address, mac_address } = req.body;
+  const { student_id, mac_address } = req.body;
 
-  if (!student_id || !device_name || !ip_address || !mac_address) {
+  if (!student_id || !mac_address) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -55,8 +52,6 @@ router.post('/check', async (req, res) => {
     const log = await prisma.loginLogs.findFirst({
       where: {
         student_id: parseInt(student_id),
-        device_name,
-        ip_address,
         mac_address,
         status: 'approved',
       },
@@ -73,6 +68,7 @@ router.post('/check', async (req, res) => {
   }
 });
 
+// Approve login log
 router.patch('/approve/:id', async (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -96,6 +92,7 @@ router.patch('/approve/:id', async (req, res) => {
   }
 });
 
+// Fetch all login logs
 router.get('/', async (req, res) => {
   try {
     const logs = await prisma.loginLogs.findMany({
@@ -111,7 +108,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// ✅ Delete login log by ID
+// Delete login log
 router.delete('/:id', async (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -133,4 +130,5 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 module.exports = router;
