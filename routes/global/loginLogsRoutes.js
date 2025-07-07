@@ -2,7 +2,7 @@ const express = require('express');
 const prisma = require('../../models/prisma');
 const router = express.Router();
 
-// Create login log
+// Create or update login log
 router.post('/', async (req, res) => {
   const { mac_address } = req.body;
 
@@ -16,12 +16,27 @@ router.post('/', async (req, res) => {
     });
 
     if (existingLog) {
+      // If found and status is 'offline', update to 'online'
+      if (existingLog.active_status === 'offline') {
+        const updatedLog = await prisma.loginLogs.update({
+          where: { id: existingLog.id },
+          data: { active_status: 'online' },
+        });
+
+        return res.status(200).json({
+          message: 'Login log reactivated (status set to online)',
+          log: updatedLog,
+        });
+      }
+
+      // Otherwise, just return the existing log
       return res.status(200).json({
         message: 'Login log already exists',
         log: existingLog,
       });
     }
 
+    // Create a new login log
     const newLog = await prisma.loginLogs.create({
       data: {
         mac_address,
@@ -36,6 +51,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 
 
