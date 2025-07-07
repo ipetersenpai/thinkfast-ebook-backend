@@ -4,18 +4,15 @@ const router = express.Router();
 
 // Create login log
 router.post('/', async (req, res) => {
-  const { student_id, mac_address } = req.body;
+  const { mac_address } = req.body;
 
-  if (!student_id || !mac_address) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  if (!mac_address) {
+    return res.status(400).json({ error: 'Missing mac_address' });
   }
 
   try {
     const existingLog = await prisma.loginLogs.findFirst({
-      where: {
-        student_id: parseInt(student_id),
-        mac_address,
-      },
+      where: { mac_address },
     });
 
     if (existingLog) {
@@ -27,9 +24,9 @@ router.post('/', async (req, res) => {
 
     const newLog = await prisma.loginLogs.create({
       data: {
-        student_id: parseInt(student_id),
         mac_address,
         status: 'pending',
+        active_status: 'online',
       },
     });
 
@@ -40,6 +37,8 @@ router.post('/', async (req, res) => {
   }
 });
 
+
+
 // Check login log approval
 router.post('/check', async (req, res) => {
   const { student_id, mac_address } = req.body;
@@ -49,9 +48,18 @@ router.post('/check', async (req, res) => {
   }
 
   try {
+    // Step 1: Check if the student is enrolled
+    const enrolledStudent = await prisma.enrolledStudent.findFirst({
+      where: { student_id: parseInt(student_id) },
+    });
+
+    if (!enrolledStudent) {
+      return res.status(404).json({ error: 'Student is not enrolled' });
+    }
+
+    // Step 2: Check login log approval by mac_address only
     const log = await prisma.loginLogs.findFirst({
       where: {
-        student_id: parseInt(student_id),
         mac_address,
         status: 'approved',
       },
@@ -67,6 +75,8 @@ router.post('/check', async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
 
 // Approve login log
 router.patch('/approve/:id', async (req, res) => {
@@ -130,5 +140,41 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
+// Logout login log by mac_address
+router.post('/offline', async (req, res) => {
+  const { mac_address } = req.body;
+
+  if (!mac_address) {
+    return res.status(400).json({ error: 'Missing mac_address' });
+  }
+
+  try {
+    // Simply find the latest login log by mac_address
+    const log = await prisma.loginLogs.findFirst({
+      where: { mac_address },
+    });
+
+    if (!log) {
+      return res.status(404).json({ error: 'Login log not found' });
+    }
+
+    const updatedLog = await prisma.loginLogs.update({
+      where: { id: log.id },
+      data: { active_status: 'offline' },
+    });
+
+    res.status(200).json({
+      message: 'Logout successful',
+      log: updatedLog,
+    });
+  } catch (error) {
+    console.error('Error updating login log:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 module.exports = router;

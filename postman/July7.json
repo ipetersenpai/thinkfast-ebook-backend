@@ -171,13 +171,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:3500/api/auth/login",
+							"raw": "http://128.199.66.214:3500/api/auth/login",
 							"protocol": "http",
 							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
+								"128",
+								"199",
+								"66",
+								"214"
 							],
 							"port": "3500",
 							"path": [
@@ -800,6 +800,70 @@
 								{
 									"key": "term:",
 									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "By Faculty and Course",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 101,\n    \"student_id\": 20230001,\n    \"session_id\": 1,\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"middlename\": \"Elizabeth\",\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 102,\n    \"student_id\": 20230002,\n    \"session_id\": 1,\n    \"firstname\": \"John\",\n    \"lastname\": \"Smith\",\n    \"middlename\": null,\n    \"year_level\": \"2\"\n  },\n  {\n    \"term\": \"2526\",\n    \"student_session_id\": 103,\n    \"student_id\": 20230003,\n    \"session_id\": 1,\n    \"firstname\": \"Emily\",\n    \"lastname\": \"Johnson\",\n    \"year_level\": \"3\"\n  }\n]\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/enroll-student/by-faculty/:faculty_id:/term/:term:/course/:courseId:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"enroll-student",
+								"by-faculty",
+								":faculty_id:",
+								"term",
+								":term:",
+								"course",
+								":courseId:"
+							],
+							"variable": [
+								{
+									"key": "faculty_id:",
+									"value": "4"
+								},
+								{
+									"key": "term:",
+									"value": "2526"
+								},
+								{
+									"key": "courseId:",
+									"value": "1"
 								}
 							]
 						}
@@ -1674,6 +1738,59 @@
 					"response": []
 				},
 				{
+					"name": "update PT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"id\" : \"\",\n  \"title\": \"Final Performance Task\",\n  \"total_points\": 50\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/performance-task/:performance_task_id:",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"performance-task",
+								":performance_task_id:"
+							],
+							"variable": [
+								{
+									"key": "performance_task_id:",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Delete PT",
 					"request": {
 						"auth": {
@@ -1905,11 +2022,65 @@
 							"variable": [
 								{
 									"key": "student_id:",
-									"value": "20230007"
+									"value": "819"
 								},
 								{
 									"key": "assessment_id:",
-									"value": "8"
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Score",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"score\": 50\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/student-attempts/:attemptId:/update-score",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"student-attempts",
+								":attemptId:",
+								"update-score"
+							],
+							"variable": [
+								{
+									"key": "attemptId:",
+									"value": "37"
 								}
 							]
 						}
@@ -1976,7 +2147,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://127.0.0.1:3500/api/student-attempts/course/:courseId:/students",
+							"raw": "http://127.0.0.1:3500/api/student-attempts/course/:courseId:/students/4",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1990,7 +2161,8 @@
 								"student-attempts",
 								"course",
 								":courseId:",
-								"students"
+								"students",
+								"4"
 							],
 							"variable": [
 								{
@@ -2046,6 +2218,112 @@
 								{
 									"key": "student_id:",
 									"value": "20230005"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student Score per subjects",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/score-history/:course_id:/:student_id:/:academic_year:/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"score-history",
+								":course_id:",
+								":student_id:",
+								":academic_year:",
+								""
+							],
+							"variable": [
+								{
+									"key": "course_id:",
+									"value": ""
+								},
+								{
+									"key": "student_id:",
+									"value": "819"
+								},
+								{
+									"key": "academic_year:",
+									"value": "2526"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Students Scores per subjects",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6InN1cGVyYWRtaW4iLCJzdGF0dXMiOiJhY3RpdmUiLCJpYXQiOjE3NDc2MzYyNDcsImV4cCI6MTc1NTQxMjI0N30.qHyPm6lKynI7aKeMf814x-UgYSZwM89TqR4icDktuxY",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/score-history/:course_id:/term/:academic_year:/scores",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"score-history",
+								":course_id:",
+								"term",
+								":academic_year:",
+								"scores"
+							],
+							"variable": [
+								{
+									"key": "course_id:",
+									"value": "2"
 								},
 								{
 									"key": "academic_year:",
@@ -2523,7 +2801,7 @@
 			"name": "login attempts",
 			"item": [
 				{
-					"name": "login attempt",
+					"name": "save mac address",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -2535,7 +2813,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"student_id\": \"1001\",\n    \"device_name\": \"sample only\",\n    \"ip_address\": \"127.0.0.1\",\n    \"mac_address\" : \"00-B0-D0-63-C2-26\"\n}",
+							"raw": "{\n    \"mac_address\" : \"99-B0-D0-63-C2-26\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2555,6 +2833,84 @@
 							"path": [
 								"api",
 								"login-attempts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check if approve",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"student_id\": \"1001\",\n    \"mac_address\" : \"00-B0-D0-63-C2-26\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/login-attempts/check",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"login-attempts",
+								"check"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Offline Device",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mac_address\" : \"00-B0-D0-63-C2-26\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3500/api/login-attempts/offline",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3500",
+							"path": [
+								"api",
+								"login-attempts",
+								"offline"
 							]
 						}
 					},
