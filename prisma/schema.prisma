@@ -23,6 +23,7 @@ model User {
   email      String   @unique
   role       String
   status     String
+  profile_display String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }

@@ -1,10 +1,55 @@
+// routes\superadmin\userRoute.js
 const express = require("express");
 const bcrypt = require("bcrypt");
 const prisma = require("../../models/prisma");
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
 const router = express.Router();
 
-// Create user
-router.post("/", async (req, res) => {
+// Multer storage config
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, "../../uploads/user_profiles");
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    cb(null, uploadDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname);
+    cb(null, "profile-" + uniqueSuffix + ext);
+  },
+});
+
+// File filter
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "image/webp",
+    "image/heic",
+    "image/heif",
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error("Only image files are allowed!"), false);
+  }
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15MB max
+}).any();
+
+
+// CREATE USER
+router.post("/", upload, async (req, res) => {
   try {
     const {
       firstname,
@@ -17,27 +62,23 @@ router.post("/", async (req, res) => {
       status,
     } = req.body;
 
-    // Check if username already exists
-    const existingUsername = await prisma.user.findFirst({
-      where: { username },
-    });
-
+    const existingUsername = await prisma.user.findFirst({ where: { username } });
     if (existingUsername) {
       return res.status(400).json({ message: "Username already in use" });
     }
 
-    // If email is provided, check if it already exists
     if (email) {
-      const existingEmail = await prisma.user.findFirst({
-        where: { email },
-      });
-
+      const existingEmail = await prisma.user.findFirst({ where: { email } });
       if (existingEmail) {
         return res.status(400).json({ message: "Email already in use" });
       }
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password.trim(), 10);
+    const uploadedFile = req.files?.[0];
+    const profilePath = uploadedFile
+      ? `/uploads/user_profiles/${uploadedFile.filename}`
+      : null;
 
     const user = await prisma.user.create({
       data: {
@@ -49,6 +90,7 @@ router.post("/", async (req, res) => {
         email,
         role,
         status,
+        profile_display: profilePath,
       },
     });
 
@@ -58,18 +100,13 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    const errorMessage =
-      error instanceof Error ? error.message : "User creation failed";
-
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: "User creation failed" });
   }
 });
 
 
-
-// Update user
-router.put("/update/:id", async (req, res) => {
+// UPDATE USER
+router.put("/update/:id", upload, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const {
@@ -83,44 +120,29 @@ router.put("/update/:id", async (req, res) => {
       status,
     } = req.body;
 
-    // Check if user exists
-    const existingUser = await prisma.user.findUnique({
-      where: { id: id },
-    });
-
+    const existingUser = await prisma.user.findUnique({ where: { id } });
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Check if username is taken by another user
     if (username) {
       const usernameTaken = await prisma.user.findFirst({
-        where: {
-          username: username,
-          NOT: { id: id },
-        },
+        where: { username, NOT: { id } },
       });
-
       if (usernameTaken) {
         return res.status(400).json({ message: "Username already in use" });
       }
     }
 
-    // Check if email is taken by another user
     if (email) {
       const emailTaken = await prisma.user.findFirst({
-        where: {
-          email: email,
-          NOT: { id: id },
-        },
+        where: { email, NOT: { id } },
       });
-
       if (emailTaken) {
         return res.status(400).json({ message: "Email already in use" });
       }
     }
 
-    // Prepare update data
     const updatedData = {
       firstname,
       lastname,
@@ -131,12 +153,25 @@ router.put("/update/:id", async (req, res) => {
       status,
     };
 
-    if (password) {
-      updatedData.password = await bcrypt.hash(password, 10);
+    const trimmedPassword = typeof password === "string" ? password.trim() : "";
+    if (trimmedPassword.length > 0) {
+      updatedData.password = await bcrypt.hash(trimmedPassword, 10);
+    }
+
+    // Handle profile image replacement
+    const uploadedFile = req.files?.[0];
+    if (uploadedFile) {
+      if (existingUser.profile_display) {
+        const oldPath = path.join(__dirname, "../../", existingUser.profile_display);
+        if (fs.existsSync(oldPath)) {
+          fs.unlinkSync(oldPath);
+        }
+      }
+      updatedData.profile_display = `/uploads/user_profiles/${uploadedFile.filename}`;
     }
 
     const updatedUser = await prisma.user.update({
-      where: { id: id },
+      where: { id },
       data: updatedData,
     });
 
@@ -146,14 +181,9 @@ router.put("/update/:id", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-
-    const errorMessage =
-      error instanceof Error ? error.message : "User update failed";
-
-    res.status(500).json({ message: errorMessage });
+    res.status(500).json({ message: "User update failed" });
   }
 });
-
 
 
 // Get all users
@@ -169,6 +199,7 @@ router.get("/", async (req, res) => {
         email: true,
         role: true,
         status: true,
+        profile_display: true,
         created_at: true,
         updated_at: true,
       },
@@ -180,6 +211,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch users" });
   }
 });
+
 
 // Deactivate user
 router.patch("/deactivate/:id", async (req, res) => {
@@ -211,9 +243,4 @@ router.patch("/deactivate/:id", async (req, res) => {
   }
 });
 
-
-
-
 module.exports = router;
-
-

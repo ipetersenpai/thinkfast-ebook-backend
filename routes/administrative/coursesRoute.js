@@ -211,10 +211,10 @@ router.delete("/:id", async (req, res) => {
     });
 
     // Step 4: Delete other course-related entities
-    await prisma.ebook.deleteMany({ where: { course_id: courseId } });
+// await prisma.ebook.deleteMany({ where: { course_id: courseId } });
     await prisma.assessment.deleteMany({ where: { course_id: courseId } });
-    await prisma.performanceTask.deleteMany({ where: { course_id: courseId } });
-    await prisma.studentCourse.deleteMany({ where: { course_id: courseId } });
+    await prisma.performanceTaskScore.deleteMany({ where: { course_id: courseId } });
+    await prisma.studentAssignCourses.deleteMany({ where: { course_id: courseId } });
 
     // Step 5: Finally, delete the course itself
     await prisma.course.delete({
