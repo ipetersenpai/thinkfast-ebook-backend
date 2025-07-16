@@ -122,63 +122,66 @@ router.get("/students/gender-summary/:facultyId", async (req, res) => {
 
     const activeTerm = activeYear.term;
 
-    // Step 1: Get all course IDs taught by this faculty in the active term
+    // Step 1: Get all courses taught by this faculty in the active term
     const facultyCourses = await prisma.course.findMany({
       where: {
         faculty_id: facultyId,
         term: activeTerm,
       },
-      select: { id: true },
+      select: {
+        id: true,
+        title: true,
+      },
     });
 
-    const courseIds = facultyCourses.map(course => course.id);
-
-    if (courseIds.length === 0) {
-      return res.json({
-        faculty_id: facultyId,
-        male: 0,
-        female: 0,
-      });
+    if (facultyCourses.length === 0) {
+      return res.json([]);
     }
 
-    // Step 2: Get enrolled students assigned to these courses in the active term
-    const studentAssignments = await prisma.studentAssignCourses.findMany({
-      where: {
-        course_id: { in: courseIds },
-        term: activeTerm, // make sure it's from the current academic year
-      },
-      select: {
-        enrolledStudent: {
-          select: {
-            gender: true,
-            term: true,
+    // Step 2: For each course, count male and female students
+    const genderSummaryPromises = facultyCourses.map(async (course) => {
+      const assignments = await prisma.studentAssignCourses.findMany({
+        where: {
+          course_id: course.id,
+          term: activeTerm,
+        },
+        select: {
+          enrolledStudent: {
+            select: {
+              gender: true,
+              term: true,
+            },
           },
         },
-      },
+      });
+
+      let male = 0;
+      let female = 0;
+
+      assignments.forEach(({ enrolledStudent }) => {
+        if (enrolledStudent.term !== activeTerm) return; // extra safety
+        const gender = enrolledStudent.gender?.toLowerCase();
+        if (gender === "male") male++;
+        else if (gender === "female") female++;
+      });
+
+      return {
+        course_id: course.id,
+        course_title: course.title,
+        male,
+        female,
+      };
     });
 
-    // Step 3: Count male and female students, only for current term
-    let male = 0;
-    let female = 0;
+    const results = await Promise.all(genderSummaryPromises);
 
-    studentAssignments.forEach(({ enrolledStudent }) => {
-      if (enrolledStudent.term !== activeTerm) return; // extra safety
-      const gender = enrolledStudent.gender?.toLowerCase();
-      if (gender === "male") male++;
-      else if (gender === "female") female++;
-    });
-
-    res.json({
-      faculty_id: facultyId,
-      male,
-      female,
-    });
-
+    res.json(results);
   } catch (error) {
-    console.error("Error fetching gender summary:", error);
+    console.error("Error fetching gender summary per course:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 });
+
 
 router.get("/users/total", async (req, res) => {
   try {
